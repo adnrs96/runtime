@@ -272,7 +272,9 @@ class Lexicon:
         service = line[LineConstants.service]
 
         # Does this service belong to a streaming service?
-        s = story.context.get(service)
+        combined_context = dict(story.context,
+                                **story.app.global_contexts[story.name])
+        s = combined_context.get(service)
         if isinstance(s, StreamingService):
             # Yes, we need to subscribe to an event with the service.
             await Services.when(s, story, line)

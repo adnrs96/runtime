@@ -156,6 +156,7 @@ def test_story_end_line_output(patch, story):
 
 def test_story_end_line_output_assign(patch, story):
     patch.object(Dict, 'set')
+    patch.object(story, 'line_has_parent', return_value=False)
     story.results = {'1': {'start': 'start'}}
     assign = {'paths': ['x']}
     story.end_line('1', output='output', assign=assign)

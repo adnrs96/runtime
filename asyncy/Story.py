@@ -22,7 +22,7 @@ class Story:
         self.entrypoint = app.stories[story_name]['entrypoint']
         self.results = {}
         self.environment = None
-        self.context = None
+        self.context = {}
         self.containers = None
         self.repository = None
         self.version = None
@@ -37,6 +37,9 @@ class Story:
         self._stack.append(line_number)
         yield
         self._stack.pop()
+
+    def global_context(self):
+        return self.app.global_contexts.setdefault(self.name, {})
 
     def get_stack(self) -> []:
         return self._stack
@@ -145,7 +148,10 @@ class Story:
                              f'with type {type(arg)}')
             return arg
 
-        result = Resolver.resolve(arg, self.context)
+        result = Resolver.resolve(
+            arg,
+            dict(self.context, **self.global_context())
+        )
 
         self.logger.info(f'Resolved "{arg}" to '
                          f'"{self.get_str_for_logging(result)}" '
@@ -210,16 +216,21 @@ class Story:
 
         # assign a variable to the output
         if assign:
-            self.set_variable(assign, output)
+            line = self.line(line_number)
+            is_global = self.line_has_parent(None, line)
+            self.set_variable(assign, output, is_global)
 
-    def set_variable(self, assign, output):
+    def set_variable(self, assign, output, is_global):
         if assign is None or assign.get('paths') is None:
             self.logger.warn(
                 'Output should ne assigned to something, '
                 'but no variable found!')
             return
 
-        Dict.set(self.context, assign['paths'], output)
+        Dict.set(
+            self.global_context() if is_global else self.context,
+            assign['paths'], output
+        )
 
     def function_line_by_name(self, function_name):
         """

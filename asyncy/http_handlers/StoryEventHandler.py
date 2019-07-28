@@ -30,6 +30,8 @@ class StoryEventHandler(BaseHandler):
         }
 
         app = Apps.get(app_id)
+        # Inject global story context before running when block
+        context.update(app.global_contexts[story_name])
 
         for key in self.get_req().files.keys():
             if key == CLOUD_EVENTS_FILE_KEY:
