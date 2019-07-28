@@ -26,7 +26,9 @@ class Stories:
     @staticmethod
     async def execute_story(logger, story):
         """
-        Executes each line in the story
+        Invoked to execute all lines of a story
+
+        Executes each line in the story by calling `execute_line`
         """
         line_number = story.first_line()
         while line_number:
@@ -44,9 +46,9 @@ class Stories:
     @staticmethod
     async def execute_line(logger, story, line_number):
         """
-        Executes a single line by calling the Lexicon for various operations.
+        Invoked to execute a single line by execute_story or execute_block
 
-        To execute a function completely, see Stories#call.
+        Calls the Lexicon for various operations.
 
         :return: Returns the next line number to be executed
         (return value from Lexicon), or None if there is none.
@@ -96,6 +98,8 @@ class Stories:
     @staticmethod
     async def execute_block(logger, story, parent_line: dict):
         """
+        Invoked to execute `when` blocks, `foreach` loops and `function` calls
+
         Executes all the lines whose parent is parent_line, and returns
         either one of the following:
         1. A sentinel (from LineSentinels) - if this was returned by execute()
@@ -106,10 +110,12 @@ class Stories:
         """
         next_line = story.line(parent_line['enter'])
 
-        # If this block represents a streaming service, copy over it's
-        # output to the context, so that Lexicon can read it later.
-        if parent_line.get('output') is not None \
-                and parent_line.get('method') == 'when':
+        # when block
+        # > http server as api
+        # >   when api listen method: "get" path: "/" as var
+        # in story context, set `var` to CE payload if it is present
+        if parent_line.get('method') == 'when' and \
+                parent_line.get('output') is not None:
             story.context[ContextConstants.service_output] = \
                 parent_line['output'][0]
 
@@ -117,6 +123,7 @@ class Stories:
                 story.context[parent_line['output'][0]] = \
                     story.context[ContextConstants.service_event].get('data')
 
+        # execute all lines that are inside the block
         while next_line is not None \
                 and story.line_has_parent(parent_line['ln'], next_line):
             result = await Stories.execute_line(logger, story, next_line['ln'])
@@ -135,6 +142,10 @@ class Stories:
                   app, logger, story_name, *, story_id=None,
                   block=None, context=None,
                   function_name=None):
+        """
+        Invoked to execute a complete story during deployment
+        or a specific block of a story upon an event
+        """
         start = time.time()
         try:
             logger.log('story-start', story_name, story_id)
@@ -142,11 +153,16 @@ class Stories:
             story = cls.story(app, logger, story_name)
             story.prepare(context)
 
+            # backward compatibility
             if function_name:
                 raise StoryscriptRuntimeError('No longer supported')
+            # when block (microservice pubsub)
+            # omg -> POST runtime/story/event -> StoryEventHandler.run_story
             elif block:
                 with story.new_frame(block):
                     await cls.execute_block(logger, story, story.line(block))
+            # deployment
+            # Apps.deploy_release -> App.bootstrap -> App.run_stories
             else:
                 await cls.execute_story(logger, story)
 
