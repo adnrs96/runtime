@@ -682,7 +682,7 @@ async def run_test_case_in_suite(suite: TestSuite, case: TestCase, logger):
     story = Story(app, story_name, logger)
     story.prepare(context)
     try:
-        await Stories.execute(logger, story)
+        await Stories.execute_story(logger, story)
     except StoryscriptError as e:
         try:
             assert isinstance(case.assertion, RuntimeExceptionAssertion)

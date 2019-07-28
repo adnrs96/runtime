@@ -24,11 +24,11 @@ def test_stories_story(patch, app, logger):
 
 
 @mark.asyncio
-async def test_stories_execute(patch, app, logger, story, async_mock):
+async def test_stories_execute_story(patch, app, logger, story, async_mock):
     patch.object(Stories, 'execute_line', new=async_mock(return_value=None))
     patch.object(Story, 'first_line')
     story.prepare()
-    await Stories.execute(logger, story)
+    await Stories.execute_story(logger, story)
     assert Story.first_line.call_count == 1
     logger.log.assert_called_with('story-execution', None)
     Stories.execute_line.mock.assert_called_with(logger,
@@ -36,8 +36,8 @@ async def test_stories_execute(patch, app, logger, story, async_mock):
 
 
 @mark.asyncio
-async def test_stories_execute_escaping_sentinel(patch, app, logger,
-                                                 story, async_mock):
+async def test_stories_execute_story_escaping_sentinel(patch, app, logger,
+                                                       story, async_mock):
     """
     This one ensures that any uncaught sentinels result in an exception.
     """
@@ -46,7 +46,7 @@ async def test_stories_execute_escaping_sentinel(patch, app, logger,
     patch.object(Story, 'first_line')
     story.prepare()
     with pytest.raises(StoryscriptRuntimeError):
-        await Stories.execute(logger, story)
+        await Stories.execute_story(logger, story)
 
 
 @mark.asyncio
@@ -160,7 +160,7 @@ async def test_stories_execute_block(patch, logger, story,
 @mark.asyncio
 async def test_stories_run(patch, app, logger, async_mock, magic):
     patch.object(time, 'time')
-    patch.object(Stories, 'execute', new=async_mock())
+    patch.object(Stories, 'execute_story', new=async_mock())
     patch.object(Stories, 'story')
     assert Metrics.story_run_total is not None
     assert Metrics.story_run_success is not None
@@ -170,7 +170,7 @@ async def test_stories_run(patch, app, logger, async_mock, magic):
     await Stories.run(app, logger, 'story_name')
     Stories.story.assert_called_with(app, logger, 'story_name')
     Stories.story.return_value.prepare.assert_called_with(None)
-    Stories.execute.mock.assert_called_with(logger, Stories.story())
+    Stories.execute_story.mock.assert_called_with(logger, Stories.story())
 
     Metrics.story_run_total.labels.assert_called_with(app_id=app.app_id,
                                                       story_name='story_name')
@@ -192,13 +192,13 @@ async def test_stories_run_metrics_exc(patch, app, logger, async_mock, magic):
     def exc(*args, **kwargs):
         raise Exception()
 
-    patch.object(Stories, 'execute', new=async_mock(side_effect=exc))
+    patch.object(Stories, 'execute_story', new=async_mock(side_effect=exc))
     patch.object(Stories, 'story')
     with pytest.raises(Exception):
         await Stories.run(app, logger, 'story_name')
     Stories.story.assert_called_with(app, logger, 'story_name')
     Stories.story.return_value.prepare.assert_called_with(None)
-    Stories.execute.mock.assert_called_with(logger, Stories.story())
+    Stories.execute_story.mock.assert_called_with(logger, Stories.story())
 
     Metrics.story_run_total.labels.assert_called_with(app_id=app.app_id,
                                                       story_name='story_name')
@@ -211,7 +211,7 @@ async def test_stories_run_metrics_exc(patch, app, logger, async_mock, magic):
 
 @mark.asyncio
 async def test_stories_run_logger(patch, app, logger, async_mock):
-    patch.object(Stories, 'execute', new=async_mock())
+    patch.object(Stories, 'execute_story', new=async_mock())
     patch.object(Stories, 'story')
     await Stories.run(app, logger, 'story_name')
     assert logger.log.call_count == 2
@@ -225,7 +225,7 @@ def test_stories_save_logger(logger, story):
 
 @mark.asyncio
 async def test_stories_run_with_id(patch, app, logger, async_mock):
-    patch.object(Stories, 'execute', new=async_mock())
+    patch.object(Stories, 'execute_story', new=async_mock())
     patch.object(Stories, 'story')
     await Stories.run(app, logger, 'story_name', story_id='story_id')
 
@@ -256,12 +256,12 @@ async def test_stories_run_prepare_block(patch, app, logger, async_mock):
 
 @mark.asyncio
 async def test_stories_run_prepare(patch, app, logger, async_mock):
-    patch.object(Stories, 'execute', new=async_mock())
+    patch.object(Stories, 'execute_story', new=async_mock())
     patch.object(Stories, 'story')
     await Stories.run(app, logger, 'story_name',
                       context='context')
     Stories.story().prepare.assert_called_with('context')
-    Stories.execute.mock \
+    Stories.execute_story.mock \
         .assert_called_with(logger, Stories.story())
 
 

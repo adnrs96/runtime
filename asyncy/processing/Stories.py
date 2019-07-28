@@ -24,7 +24,7 @@ class Stories:
         logger.log('story-save', story.name, story.app_id)
 
     @staticmethod
-    async def execute(logger, story):
+    async def execute_story(logger, story):
         """
         Executes each line in the story
         """
@@ -148,7 +148,7 @@ class Stories:
                 with story.new_frame(block):
                     await cls.execute_block(logger, story, story.line(block))
             else:
-                await cls.execute(logger, story)
+                await cls.execute_story(logger, story)
 
             logger.log('story-end', story_name, story_id)
             Metrics.story_run_success.labels(app_id=app.app_id,
