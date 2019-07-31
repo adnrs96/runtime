@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
+from pytest import mark
+
 from storyengine.App import App
 from storyengine.Config import Config
 from storyengine.Containers import Containers
 from storyengine.processing import Stories
-
-from pytest import mark
 
 
 # @mark.asyncio

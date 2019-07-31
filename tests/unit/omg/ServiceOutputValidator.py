@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 from collections import deque
 
-from storyengine.Types import Command, Service
-from storyengine.omg.Exceptions import FieldValueTypeMismatchOmgError,\
-    MissingFieldOmgError, UnsupportedTypeOmgError
-from storyengine.omg.ServiceOutputValidator import ServiceOutputValidator
-
 import pytest
 from pytest import fixture, mark
+
+from storyengine.Types import Command, Service
+from storyengine.omg.Exceptions import FieldValueTypeMismatchOmgError, \
+    MissingFieldOmgError, UnsupportedTypeOmgError
+from storyengine.omg.ServiceOutputValidator import ServiceOutputValidator
 
 
 @fixture

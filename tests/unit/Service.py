@@ -3,6 +3,12 @@ import asyncio
 import sys
 from unittest.mock import MagicMock
 
+from click.testing import CliRunner
+
+import prometheus_client
+
+from pytest import fixture, mark
+
 from storyengine import Version
 from storyengine.Apps import Apps
 from storyengine.Config import Config
@@ -11,13 +17,6 @@ from storyengine.Service import Service
 from storyengine.processing.Services import Services
 from storyengine.processing.internal import File, Http, Json, Log
 from storyengine.reporting.Reporter import Reporter
-
-from click.testing import CliRunner
-
-import prometheus_client
-
-import pytest
-from pytest import fixture, mark
 
 import tornado
 

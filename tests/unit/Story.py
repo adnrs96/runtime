@@ -2,10 +2,10 @@
 import pathlib
 import time
 
+from pytest import mark
+
 from storyengine.Story import MAX_BYTES_LOGGING, Story
 from storyengine.utils import Dict, Resolver
-
-from pytest import mark
 
 
 def test_story_init(app, logger, story):

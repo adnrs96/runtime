@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
-from storyengine.Exceptions import ServiceNotFound
-from storyengine.GraphQLAPI import GraphQLAPI
-
 import pytest
 from pytest import mark
+
+from storyengine.Exceptions import ServiceNotFound
+from storyengine.GraphQLAPI import GraphQLAPI
 
 
 @mark.asyncio

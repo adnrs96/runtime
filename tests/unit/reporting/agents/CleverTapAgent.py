@@ -1,11 +1,11 @@
 import json
 import time
 
+from pytest import mark
+
 from storyengine.entities.ReportingEvent import ReportingEvent
 from storyengine.reporting.agents.CleverTapAgent import CleverTapAgent
 from storyengine.utils.HttpUtils import HttpUtils
-
-from pytest import mark
 
 from tornado.httpclient import AsyncHTTPClient
 

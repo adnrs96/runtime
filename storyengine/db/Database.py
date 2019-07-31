@@ -4,13 +4,13 @@ from contextlib import asynccontextmanager
 
 import asyncpg
 
-from storyengine.Config import Config
-from storyengine.entities.ContainerConfig import ContainerConfig
-from storyengine.entities.Release import Release
-from storyengine.enums.AppEnvironment import AppEnvironment
-from storyengine.enums.ReleaseState import ReleaseState
-
 import numpy as np
+
+from ..Config import Config
+from ..entities.ContainerConfig import ContainerConfig
+from ..entities.Release import Release
+from ..enums.AppEnvironment import AppEnvironment
+from ..enums.ReleaseState import ReleaseState
 
 _pg_pool = None
 

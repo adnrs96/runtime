@@ -3,6 +3,9 @@ import asyncio
 import json
 from collections import deque
 
+import pytest
+from pytest import fixture, mark
+
 from storyengine.App import App, AppData
 from storyengine.AppConfig import Expose
 from storyengine.Containers import Containers
@@ -15,9 +18,6 @@ from storyengine.enums.AppEnvironment import AppEnvironment
 from storyengine.processing import Stories
 from storyengine.processing.Services import Command, Service, Services
 from storyengine.utils.HttpUtils import HttpUtils
-
-import pytest
-from pytest import fixture, mark
 
 from tornado.httpclient import AsyncHTTPClient, HTTPRequest, HTTPResponse
 

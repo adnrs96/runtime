@@ -1,15 +1,15 @@
 # -*- coding: utf-8 -*-
 from unittest.mock import MagicMock
 
-from storyengine.Exceptions import StoryscriptError
-from storyengine.processing.Services import Services
-from storyengine.processing.internal import Http
-from storyengine.utils.HttpUtils import HttpUtils
-
 import certifi
 
 import pytest
 from pytest import fixture, mark
+
+from storyengine.Exceptions import StoryscriptError
+from storyengine.processing.Services import Services
+from storyengine.processing.internal import Http
+from storyengine.utils.HttpUtils import HttpUtils
 
 from tornado.httpclient import AsyncHTTPClient
 

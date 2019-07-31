@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 from unittest.mock import MagicMock
 
+from pytest import mark
+
 from storyengine.Exceptions import StoryscriptError
 from storyengine.constants import Events
 from storyengine.entities.ReportingEvent import ReportingEvent
 from storyengine.http_handlers.BaseHandler import BaseHandler
 from storyengine.reporting.Reporter import Reporter
-
-from pytest import mark
 
 
 def test_handle_init(magic, logger):

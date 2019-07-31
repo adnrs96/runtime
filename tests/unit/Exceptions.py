@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
+from pytest import mark, raises
+
 from storyengine.Exceptions import StoryscriptError, TooManyActiveApps, \
     TooManyServices, TooManyVolumes
-
-from pytest import mark, raises
 
 
 def test_asyncy_error():

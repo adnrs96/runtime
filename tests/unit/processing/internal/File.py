@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 import os
 
+import pytest
+from pytest import fixture, mark
+
 from storyengine.Exceptions import StoryscriptError
 from storyengine.processing.Services import Services
 from storyengine.processing.internal import File
-
-import pytest
-from pytest import fixture, mark
 
 
 @fixture

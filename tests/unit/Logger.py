@@ -4,12 +4,12 @@ import logging
 from io import StringIO
 from logging import LoggerAdapter
 
-from storyengine.Config import Config
-from storyengine.Logger import Adapter, JSONFormatter, Logger
-
 from frustum import Frustum
 
 from pytest import fixture, mark
+
+from storyengine.Config import Config
+from storyengine.Logger import Adapter, JSONFormatter, Logger
 
 
 @fixture

@@ -2,6 +2,9 @@
 from unittest import mock
 from unittest.mock import MagicMock, Mock
 
+import pytest
+from pytest import fixture, mark
+
 from storyengine import Metrics
 from storyengine.Exceptions import InvalidKeywordUsage, StoryscriptError
 from storyengine.Story import Story
@@ -13,9 +16,6 @@ from storyengine.processing import Lexicon, Stories
 from storyengine.processing.Mutations import Mutations
 from storyengine.processing.Services import Services
 from storyengine.utils.HttpUtils import HttpUtils
-
-import pytest
-from pytest import fixture, mark
 
 from tornado.httpclient import AsyncHTTPClient
 

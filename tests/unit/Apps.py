@@ -3,7 +3,8 @@ import asyncio
 import os
 from unittest import mock
 
-import asyncpg
+import pytest
+from pytest import fixture, mark
 
 from storyengine.App import App, AppData
 from storyengine.AppConfig import AppConfig
@@ -23,9 +24,6 @@ from storyengine.entities.ReportingEvent import ReportingEvent
 from storyengine.enums.AppEnvironment import AppEnvironment
 from storyengine.enums.ReleaseState import ReleaseState
 from storyengine.reporting.Reporter import Reporter
-
-import pytest
-from pytest import fixture, mark
 
 
 def exc():

@@ -1,15 +1,15 @@
 # -*- coding: utf-8 -*-
 import json
 
+import pytest
+from pytest import fixture, mark
+
 from storyengine.Apps import Apps
 from storyengine.constants import ContextConstants
 from storyengine.entities.Multipart import FileFormField
-from storyengine.http_handlers.StoryEventHandler import CLOUD_EVENTS_FILE_KEY, \
-    StoryEventHandler
+from storyengine.http_handlers.StoryEventHandler import \
+    CLOUD_EVENTS_FILE_KEY, StoryEventHandler
 from storyengine.processing import Stories
-
-import pytest
-from pytest import fixture, mark
 
 import tornado
 from tornado import ioloop

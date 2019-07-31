@@ -3,6 +3,9 @@ import collections
 import time
 from unittest import mock
 
+import pytest
+from pytest import mark
+
 from storyengine import Metrics
 from storyengine.Containers import Containers
 from storyengine.Exceptions import StoryscriptError, StoryscriptRuntimeError
@@ -11,9 +14,6 @@ from storyengine.constants import ContextConstants
 from storyengine.constants.LineSentinels import LineSentinels
 from storyengine.processing import Lexicon, Stories
 from storyengine.utils import Dict
-
-import pytest
-from pytest import mark
 
 
 def test_stories_story(patch, app, logger):

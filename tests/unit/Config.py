@@ -2,9 +2,9 @@
 import os
 import socket
 
-from storyengine.Config import Config
-
 from pytest import fixture
+
+from storyengine.Config import Config
 
 
 @fixture

@@ -7,22 +7,23 @@ from collections import deque, namedtuple
 from io import StringIO
 from unittest.mock import MagicMock, Mock
 
+import pytest
+from pytest import fixture, mark
+
+from requests.structures import CaseInsensitiveDict
+
 from storyengine.Containers import Containers
 from storyengine.Exceptions import ArgumentTypeMismatchError, StoryscriptError
 from storyengine.Types import StreamingService
 from storyengine.constants import ContextConstants
-from storyengine.constants.LineConstants import LineConstants as Line, LineConstants
+from storyengine.constants.LineConstants import \
+    LineConstants as Line, LineConstants
 from storyengine.constants.ServiceConstants import ServiceConstants
 from storyengine.entities.Multipart import FileFormField, FormField
 from storyengine.omg.ServiceOutputValidator import ServiceOutputValidator
 from storyengine.processing.Services import Command, Event, HttpDataEncoder, \
     Service, Services
 from storyengine.utils.HttpUtils import HttpUtils
-
-import pytest
-from pytest import fixture, mark
-
-from requests.structures import CaseInsensitiveDict
 
 from tornado.gen import coroutine
 from tornado.httpclient import AsyncHTTPClient, HTTPRequest, HTTPResponse

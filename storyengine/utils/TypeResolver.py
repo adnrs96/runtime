@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 import re
 
-from storyengine.Exceptions import TypeAssertionRuntimeError, TypeValueRuntimeError
-
 import storyscript.compiler.semantics.types.Types as types
+
+from ..Exceptions import TypeAssertionRuntimeError, TypeValueRuntimeError
+
 
 # Python 3.6: _sre.SRE_Pattern
 # Python 3.7: re.Pattern

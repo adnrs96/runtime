@@ -1,6 +1,4 @@
 # -*- coding: utf-8 -*-
-from operator import attrgetter
-
 from storyengine.AppConfig import AppConfig
 
 

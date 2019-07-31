@@ -2,9 +2,13 @@
 import hashlib
 from unittest.mock import MagicMock
 
+import pytest
+from pytest import fixture, mark
+
 from storyengine.AppConfig import Expose
 from storyengine.Containers import Containers
-from storyengine.Exceptions import ActionNotFound, ContainerSpecNotRegisteredError,\
+from storyengine.Exceptions import ActionNotFound, \
+    ContainerSpecNotRegisteredError, \
     EnvironmentVariableNotFound, K8sError
 from storyengine.Kubernetes import Kubernetes
 from storyengine.constants.LineConstants import LineConstants
@@ -13,9 +17,6 @@ from storyengine.db.Database import Database
 from storyengine.entities.ContainerConfig import ContainerConfig
 from storyengine.entities.Volume import Volume
 from storyengine.processing import Stories
-
-import pytest
-from pytest import fixture, mark
 
 
 @fixture

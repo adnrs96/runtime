@@ -8,6 +8,9 @@ import urllib.parse
 from unittest import mock
 from unittest.mock import MagicMock
 
+import pytest
+from pytest import fixture, mark
+
 from storyengine.AppConfig import AppConfig, Expose, KEY_EXPOSE
 from storyengine.Exceptions import K8sError
 from storyengine.Kubernetes import Kubernetes
@@ -17,9 +20,6 @@ from storyengine.db.Database import Database
 from storyengine.entities.ContainerConfig import ContainerConfig
 from storyengine.entities.Volume import Volume
 from storyengine.utils.HttpUtils import HttpUtils
-
-import pytest
-from pytest import fixture, mark
 
 from tornado.httpclient import AsyncHTTPClient
 

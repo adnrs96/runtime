@@ -3,15 +3,15 @@ from unittest import mock
 
 import asyncpg
 
+import numpy as np
+
+from pytest import fixture, mark
+
 from storyengine.db.Database import Database
 from storyengine.entities.ContainerConfig import ContainerConfig
 from storyengine.entities.Release import Release
 from storyengine.enums.AppEnvironment import AppEnvironment
 from storyengine.enums.ReleaseState import ReleaseState
-
-import numpy as np
-
-from pytest import fixture, mark
 
 
 @fixture

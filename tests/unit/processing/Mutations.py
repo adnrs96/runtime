@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
+import pytest
+
 from storyengine.Exceptions import StoryscriptError
 from storyengine.processing.Mutations import Mutations
 from storyengine.processing.mutations.StringMutations import StringMutations
-
-import pytest
 
 
 # Note: All mutations are tested via integration
