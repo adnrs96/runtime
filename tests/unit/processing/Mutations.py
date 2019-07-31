@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
-from asyncy.Exceptions import StoryscriptError
-from asyncy.processing.Mutations import Mutations
-from asyncy.processing.mutations.StringMutations import StringMutations
+from storyengine.Exceptions import StoryscriptError
+from storyengine.processing.Mutations import Mutations
+from storyengine.processing.mutations.StringMutations import StringMutations
 
 import pytest
 

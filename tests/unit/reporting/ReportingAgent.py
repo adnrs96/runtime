@@ -1,4 +1,4 @@
-from asyncy.reporting.ReportingAgent import ReportingAgent
+from storyengine.reporting.ReportingAgent import ReportingAgent
 
 from pytest import mark
 

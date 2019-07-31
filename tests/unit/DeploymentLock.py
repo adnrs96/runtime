@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from asyncy.DeploymentLock import DeploymentLock
+from storyengine.DeploymentLock import DeploymentLock
 
 from pytest import mark
 

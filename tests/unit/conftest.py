@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from asyncy.Story import Story
+from storyengine.Story import Story
 
 from pytest import fixture
 

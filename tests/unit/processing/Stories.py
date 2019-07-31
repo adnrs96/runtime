@@ -3,14 +3,14 @@ import collections
 import time
 from unittest import mock
 
-from asyncy import Metrics
-from asyncy.Containers import Containers
-from asyncy.Exceptions import StoryscriptError, StoryscriptRuntimeError
-from asyncy.Story import Story
-from asyncy.constants import ContextConstants
-from asyncy.constants.LineSentinels import LineSentinels
-from asyncy.processing import Lexicon, Stories
-from asyncy.utils import Dict
+from storyengine import Metrics
+from storyengine.Containers import Containers
+from storyengine.Exceptions import StoryscriptError, StoryscriptRuntimeError
+from storyengine.Story import Story
+from storyengine.constants import ContextConstants
+from storyengine.constants.LineSentinels import LineSentinels
+from storyengine.processing import Lexicon, Stories
+from storyengine.utils import Dict
 
 import pytest
 from pytest import mark

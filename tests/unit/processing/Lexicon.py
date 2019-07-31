@@ -2,17 +2,17 @@
 from unittest import mock
 from unittest.mock import MagicMock, Mock
 
-from asyncy import Metrics
-from asyncy.Exceptions import InvalidKeywordUsage, StoryscriptError
-from asyncy.Story import Story
-from asyncy.Types import StreamingService
-from asyncy.constants.LineConstants import LineConstants
-from asyncy.constants.LineSentinels import LineSentinels
-from asyncy.constants.ServiceConstants import ServiceConstants
-from asyncy.processing import Lexicon, Stories
-from asyncy.processing.Mutations import Mutations
-from asyncy.processing.Services import Services
-from asyncy.utils.HttpUtils import HttpUtils
+from storyengine import Metrics
+from storyengine.Exceptions import InvalidKeywordUsage, StoryscriptError
+from storyengine.Story import Story
+from storyengine.Types import StreamingService
+from storyengine.constants.LineConstants import LineConstants
+from storyengine.constants.LineSentinels import LineSentinels
+from storyengine.constants.ServiceConstants import ServiceConstants
+from storyengine.processing import Lexicon, Stories
+from storyengine.processing.Mutations import Mutations
+from storyengine.processing.Services import Services
+from storyengine.utils.HttpUtils import HttpUtils
 
 import pytest
 from pytest import fixture, mark

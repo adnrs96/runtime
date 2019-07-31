@@ -2,17 +2,17 @@
 import hashlib
 from unittest.mock import MagicMock
 
-from asyncy.AppConfig import Expose
-from asyncy.Containers import Containers
-from asyncy.Exceptions import ActionNotFound, ContainerSpecNotRegisteredError,\
+from storyengine.AppConfig import Expose
+from storyengine.Containers import Containers
+from storyengine.Exceptions import ActionNotFound, ContainerSpecNotRegisteredError,\
     EnvironmentVariableNotFound, K8sError
-from asyncy.Kubernetes import Kubernetes
-from asyncy.constants.LineConstants import LineConstants
-from asyncy.constants.ServiceConstants import ServiceConstants
-from asyncy.db.Database import Database
-from asyncy.entities.ContainerConfig import ContainerConfig
-from asyncy.entities.Volume import Volume
-from asyncy.processing import Stories
+from storyengine.Kubernetes import Kubernetes
+from storyengine.constants.LineConstants import LineConstants
+from storyengine.constants.ServiceConstants import ServiceConstants
+from storyengine.db.Database import Database
+from storyengine.entities.ContainerConfig import ContainerConfig
+from storyengine.entities.Volume import Volume
+from storyengine.processing import Stories
 
 import pytest
 from pytest import fixture, mark

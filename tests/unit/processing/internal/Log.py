@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-from asyncy.processing.Services import Services
-from asyncy.processing.internal import Log
+from storyengine.processing.Services import Services
+from storyengine.processing.internal import Log
 
 from pytest import fixture, mark
 

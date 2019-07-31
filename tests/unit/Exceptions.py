@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from asyncy.Exceptions import StoryscriptError, TooManyActiveApps, \
+from storyengine.Exceptions import StoryscriptError, TooManyActiveApps, \
     TooManyServices, TooManyVolumes
 
 from pytest import mark, raises

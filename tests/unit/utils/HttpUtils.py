@@ -2,7 +2,7 @@
 import asyncio
 from unittest.mock import MagicMock
 
-from asyncy.utils.HttpUtils import HttpUtils
+from storyengine.utils.HttpUtils import HttpUtils
 
 import pytest
 from pytest import mark

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-from asyncy.Exceptions import ServiceNotFound
-from asyncy.GraphQLAPI import GraphQLAPI
+from storyengine.Exceptions import ServiceNotFound
+from storyengine.GraphQLAPI import GraphQLAPI
 
 import pytest
 from pytest import mark

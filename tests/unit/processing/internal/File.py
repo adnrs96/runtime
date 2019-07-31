@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 import os
 
-from asyncy.Exceptions import StoryscriptError
-from asyncy.processing.Services import Services
-from asyncy.processing.internal import File
+from storyengine.Exceptions import StoryscriptError
+from storyengine.processing.Services import Services
+from storyengine.processing.internal import File
 
 import pytest
 from pytest import fixture, mark

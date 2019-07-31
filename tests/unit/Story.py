@@ -2,8 +2,8 @@
 import pathlib
 import time
 
-from asyncy.Story import MAX_BYTES_LOGGING, Story
-from asyncy.utils import Dict, Resolver
+from storyengine.Story import MAX_BYTES_LOGGING, Story
+from storyengine.utils import Dict, Resolver
 
 from pytest import mark
 

@@ -3,14 +3,14 @@ import asyncio
 import sys
 from unittest.mock import MagicMock
 
-from asyncy import Version
-from asyncy.Apps import Apps
-from asyncy.Config import Config
-from asyncy.Logger import Logger
-from asyncy.Service import Service
-from asyncy.processing.Services import Services
-from asyncy.processing.internal import File, Http, Json, Log
-from asyncy.reporting.Reporter import Reporter
+from storyengine import Version
+from storyengine.Apps import Apps
+from storyengine.Config import Config
+from storyengine.Logger import Logger
+from storyengine.Service import Service
+from storyengine.processing.Services import Services
+from storyengine.processing.internal import File, Http, Json, Log
+from storyengine.reporting.Reporter import Reporter
 
 from click.testing import CliRunner
 
@@ -67,7 +67,7 @@ async def test_server(patch, runner):
 @mark.asyncio
 async def test_init_wrapper(patch, async_mock):
     patch.object(Apps, 'init_all', new=async_mock())
-    import asyncy.Service as ServiceFile
+    import storyengine.Service as ServiceFile
     ServiceFile.config = MagicMock()
     ServiceFile.logger = MagicMock()
     await Service.init_wrapper()
@@ -96,7 +96,7 @@ def test_service_sig_handler(patch):
 
 
 def test_service_shutdown(patch):
-    import asyncy.Service as ServiceFile
+    import storyengine.Service as ServiceFile
     ServiceFile.server = MagicMock()
     patch.object(asyncio, 'get_event_loop')
     patch.object(Service, 'shutdown_app')

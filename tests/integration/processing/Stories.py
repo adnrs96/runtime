@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
-from asyncy.App import App
-from asyncy.Config import Config
-from asyncy.Containers import Containers
-from asyncy.processing import Stories
+from storyengine.App import App
+from storyengine.Config import Config
+from storyengine.Containers import Containers
+from storyengine.processing import Stories
 
 from pytest import mark
 

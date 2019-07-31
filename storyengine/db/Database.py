@@ -4,11 +4,11 @@ from contextlib import asynccontextmanager
 
 import asyncpg
 
-from asyncy.Config import Config
-from asyncy.entities.ContainerConfig import ContainerConfig
-from asyncy.entities.Release import Release
-from asyncy.enums.AppEnvironment import AppEnvironment
-from asyncy.enums.ReleaseState import ReleaseState
+from storyengine.Config import Config
+from storyengine.entities.ContainerConfig import ContainerConfig
+from storyengine.entities.Release import Release
+from storyengine.enums.AppEnvironment import AppEnvironment
+from storyengine.enums.ReleaseState import ReleaseState
 
 import numpy as np
 

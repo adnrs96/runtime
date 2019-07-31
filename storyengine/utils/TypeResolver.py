@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import re
 
-from asyncy.Exceptions import TypeAssertionRuntimeError, TypeValueRuntimeError
+from storyengine.Exceptions import TypeAssertionRuntimeError, TypeValueRuntimeError
 
 import storyscript.compiler.semantics.types.Types as types
 

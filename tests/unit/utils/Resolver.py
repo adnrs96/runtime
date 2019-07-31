@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from asyncy.utils import Resolver
+from storyengine.utils import Resolver
 
 import pytest
 

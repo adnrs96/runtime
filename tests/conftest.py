@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 from unittest.mock import MagicMock
 
-from asyncy.constants.LineConstants import LineConstants
-from asyncy.constants.ServiceConstants import ServiceConstants
+from storyengine.constants.LineConstants import LineConstants
+from storyengine.constants.ServiceConstants import ServiceConstants
 
 from pytest import fixture
 

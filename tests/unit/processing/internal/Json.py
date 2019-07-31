@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from asyncy.processing.internal import Json
+from storyengine.processing.internal import Json
 
 from pytest import mark
 

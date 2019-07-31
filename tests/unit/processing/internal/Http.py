@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 from unittest.mock import MagicMock
 
-from asyncy.Exceptions import StoryscriptError
-from asyncy.processing.Services import Services
-from asyncy.processing.internal import Http
-from asyncy.utils.HttpUtils import HttpUtils
+from storyengine.Exceptions import StoryscriptError
+from storyengine.processing.Services import Services
+from storyengine.processing.internal import Http
+from storyengine.utils.HttpUtils import HttpUtils
 
 import certifi
 

@@ -1,4 +1,4 @@
-from asyncy.entities.ReportingEvent import ReportingEvent
+from storyengine.entities.ReportingEvent import ReportingEvent
 
 
 class ReportingAgent:

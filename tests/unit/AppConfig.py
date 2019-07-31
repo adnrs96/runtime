@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from operator import attrgetter
 
-from asyncy.AppConfig import AppConfig
+from storyengine.AppConfig import AppConfig
 
 
 def test_app_config():

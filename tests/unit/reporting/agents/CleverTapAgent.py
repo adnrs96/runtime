@@ -1,9 +1,9 @@
 import json
 import time
 
-from asyncy.entities.ReportingEvent import ReportingEvent
-from asyncy.reporting.agents.CleverTapAgent import CleverTapAgent
-from asyncy.utils.HttpUtils import HttpUtils
+from storyengine.entities.ReportingEvent import ReportingEvent
+from storyengine.reporting.agents.CleverTapAgent import CleverTapAgent
+from storyengine.utils.HttpUtils import HttpUtils
 
 from pytest import mark
 

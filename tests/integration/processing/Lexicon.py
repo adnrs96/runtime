@@ -4,11 +4,11 @@ import re
 import sys
 from unittest.mock import MagicMock
 
-from asyncy.Exceptions import StoryscriptError, StoryscriptRuntimeError, \
+from storyengine.Exceptions import StoryscriptError, StoryscriptRuntimeError, \
     TypeAssertionRuntimeError, TypeValueRuntimeError
-from asyncy.Story import Story
-from asyncy.processing import Stories
-from asyncy.processing.internal import File, Http, Json, Log
+from storyengine.Story import Story
+from storyengine.processing import Stories
+from storyengine.processing.internal import File, Http, Json, Log
 
 from pytest import mark
 

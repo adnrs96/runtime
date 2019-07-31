@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 from collections import deque
 
-from asyncy.Types import Command, Service
-from asyncy.omg.Exceptions import FieldValueTypeMismatchOmgError,\
+from storyengine.Types import Command, Service
+from storyengine.omg.Exceptions import FieldValueTypeMismatchOmgError,\
     MissingFieldOmgError, UnsupportedTypeOmgError
-from asyncy.omg.ServiceOutputValidator import ServiceOutputValidator
+from storyengine.omg.ServiceOutputValidator import ServiceOutputValidator
 
 import pytest
 from pytest import fixture, mark

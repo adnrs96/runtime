@@ -2,10 +2,10 @@
 import asyncio
 from unittest import mock
 
-from asyncy.Config import Config
-from asyncy.reporting.Reporter import Reporter
-from asyncy.reporting.agents.CleverTapAgent import CleverTapAgent
-from asyncy.reporting.agents.SentryAgent import SentryAgent
+from storyengine.Config import Config
+from storyengine.reporting.Reporter import Reporter
+from storyengine.reporting.agents.CleverTapAgent import CleverTapAgent
+from storyengine.reporting.agents.SentryAgent import SentryAgent
 
 from pytest import fixture, mark
 

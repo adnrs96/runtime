@@ -1,6 +1,6 @@
-from asyncy.Exceptions import StoryscriptError
-from asyncy.entities.ReportingEvent import ReportingEvent
-from asyncy.reporting.agents.SentryAgent import SentryAgent
+from storyengine.Exceptions import StoryscriptError
+from storyengine.entities.ReportingEvent import ReportingEvent
+from storyengine.reporting.agents.SentryAgent import SentryAgent
 
 from pytest import mark
 

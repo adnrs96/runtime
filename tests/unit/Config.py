@@ -2,7 +2,7 @@
 import os
 import socket
 
-from asyncy.Config import Config
+from storyengine.Config import Config
 
 from pytest import fixture
 

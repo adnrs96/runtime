@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
-from asyncy.Config import Config
-from asyncy.Logger import Logger
-from asyncy.Story import Story
+from storyengine.Config import Config
+from storyengine.Logger import Logger
+from storyengine.Story import Story
 
 from pytest import fixture
 

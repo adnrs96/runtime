@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from asyncy.utils import Dict
+from storyengine.utils import Dict
 
 import pytest
 

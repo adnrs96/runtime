@@ -3,10 +3,10 @@ import json
 import urllib.parse
 from unittest import mock
 
-from asyncy.Kubernetes import Kubernetes
-from asyncy.Service import Service
-from asyncy.ServiceUsage import ServiceUsage
-from asyncy.db.Database import Database
+from storyengine.Kubernetes import Kubernetes
+from storyengine.Service import Service
+from storyengine.ServiceUsage import ServiceUsage
+from storyengine.db.Database import Database
 
 from pytest import approx, mark, raises
 

@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 from unittest.mock import MagicMock
 
-from asyncy.Exceptions import StoryscriptError
-from asyncy.constants import Events
-from asyncy.entities.ReportingEvent import ReportingEvent
-from asyncy.http_handlers.BaseHandler import BaseHandler
-from asyncy.reporting.Reporter import Reporter
+from storyengine.Exceptions import StoryscriptError
+from storyengine.constants import Events
+from storyengine.entities.ReportingEvent import ReportingEvent
+from storyengine.http_handlers.BaseHandler import BaseHandler
+from storyengine.reporting.Reporter import Reporter
 
 from pytest import mark
 

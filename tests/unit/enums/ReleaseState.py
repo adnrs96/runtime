@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from asyncy.enums.ReleaseState import ReleaseState
+from storyengine.enums.ReleaseState import ReleaseState
 
 
 def test_locking():

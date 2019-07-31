@@ -7,17 +7,17 @@ from collections import deque, namedtuple
 from io import StringIO
 from unittest.mock import MagicMock, Mock
 
-from asyncy.Containers import Containers
-from asyncy.Exceptions import ArgumentTypeMismatchError, StoryscriptError
-from asyncy.Types import StreamingService
-from asyncy.constants import ContextConstants
-from asyncy.constants.LineConstants import LineConstants as Line, LineConstants
-from asyncy.constants.ServiceConstants import ServiceConstants
-from asyncy.entities.Multipart import FileFormField, FormField
-from asyncy.omg.ServiceOutputValidator import ServiceOutputValidator
-from asyncy.processing.Services import Command, Event, HttpDataEncoder, \
+from storyengine.Containers import Containers
+from storyengine.Exceptions import ArgumentTypeMismatchError, StoryscriptError
+from storyengine.Types import StreamingService
+from storyengine.constants import ContextConstants
+from storyengine.constants.LineConstants import LineConstants as Line, LineConstants
+from storyengine.constants.ServiceConstants import ServiceConstants
+from storyengine.entities.Multipart import FileFormField, FormField
+from storyengine.omg.ServiceOutputValidator import ServiceOutputValidator
+from storyengine.processing.Services import Command, Event, HttpDataEncoder, \
     Service, Services
-from asyncy.utils.HttpUtils import HttpUtils
+from storyengine.utils.HttpUtils import HttpUtils
 
 import pytest
 from pytest import fixture, mark
