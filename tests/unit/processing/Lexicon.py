@@ -11,13 +11,9 @@ from storyruntime.Story import Story
 from storyruntime.Types import StreamingService
 from storyruntime.constants.LineConstants import LineConstants
 from storyruntime.constants.LineSentinels import LineSentinels
-from storyruntime.constants.ServiceConstants import ServiceConstants
 from storyruntime.processing import Lexicon, Stories
 from storyruntime.processing.Mutations import Mutations
 from storyruntime.processing.Services import Services
-from storyruntime.utils.HttpUtils import HttpUtils
-
-from tornado.httpclient import AsyncHTTPClient
 
 
 @fixture

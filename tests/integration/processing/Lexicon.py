@@ -6,8 +6,9 @@ from unittest.mock import MagicMock
 
 from pytest import mark
 
-from storyruntime.Exceptions import StoryscriptError, StoryscriptRuntimeError, \
-    TypeAssertionRuntimeError, TypeValueRuntimeError
+from storyruntime.Exceptions import StoryscriptError, \
+    StoryscriptRuntimeError, TypeAssertionRuntimeError, \
+    TypeValueRuntimeError
 from storyruntime.Story import Story
 from storyruntime.processing import Stories
 from storyruntime.processing.internal import File, Http, Json, Log
