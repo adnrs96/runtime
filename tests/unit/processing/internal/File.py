@@ -4,9 +4,9 @@ import os
 import pytest
 from pytest import fixture, mark
 
-from storyengine.Exceptions import StoryscriptError
-from storyengine.processing.Services import Services
-from storyengine.processing.internal import File
+from storyruntime.Exceptions import StoryscriptError
+from storyruntime.processing.Services import Services
+from storyruntime.processing.internal import File
 
 
 @fixture

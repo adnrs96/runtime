@@ -4,7 +4,7 @@ import socket
 
 from pytest import fixture
 
-from storyengine.Config import Config
+from storyruntime.Config import Config
 
 
 @fixture

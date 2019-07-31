@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from storyengine.AppConfig import AppConfig
+from storyruntime.AppConfig import AppConfig
 
 
 def test_app_config():

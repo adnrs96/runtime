@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import pytest
 
-from storyengine.utils import Resolver
+from storyruntime.utils import Resolver
 
 # Note: Actual resolution tests for resolution are in integration/Lexicon.
 

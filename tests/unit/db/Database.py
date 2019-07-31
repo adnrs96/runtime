@@ -7,11 +7,11 @@ import numpy as np
 
 from pytest import fixture, mark
 
-from storyengine.db.Database import Database
-from storyengine.entities.ContainerConfig import ContainerConfig
-from storyengine.entities.Release import Release
-from storyengine.enums.AppEnvironment import AppEnvironment
-from storyengine.enums.ReleaseState import ReleaseState
+from storyruntime.db.Database import Database
+from storyruntime.entities.ContainerConfig import ContainerConfig
+from storyruntime.entities.Release import Release
+from storyruntime.enums.AppEnvironment import AppEnvironment
+from storyruntime.enums.ReleaseState import ReleaseState
 
 
 @fixture

@@ -5,10 +5,10 @@ from unittest import mock
 
 from pytest import approx, mark
 
-from storyengine.Kubernetes import Kubernetes
-from storyengine.Service import Service
-from storyengine.ServiceUsage import ServiceUsage
-from storyengine.db.Database import Database
+from storyruntime.Kubernetes import Kubernetes
+from storyruntime.Service import Service
+from storyruntime.ServiceUsage import ServiceUsage
+from storyruntime.db.Database import Database
 
 
 @mark.parametrize('value', [{

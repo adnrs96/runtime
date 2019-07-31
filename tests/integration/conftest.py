@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 from pytest import fixture
 
-from storyengine.Config import Config
-from storyengine.Logger import Logger
-from storyengine.Story import Story
+from storyruntime.Config import Config
+from storyruntime.Logger import Logger
+from storyruntime.Story import Story
 
 import ujson
 

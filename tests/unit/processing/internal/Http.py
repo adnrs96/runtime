@@ -6,10 +6,10 @@ import certifi
 import pytest
 from pytest import fixture, mark
 
-from storyengine.Exceptions import StoryscriptError
-from storyengine.processing.Services import Services
-from storyengine.processing.internal import Http
-from storyengine.utils.HttpUtils import HttpUtils
+from storyruntime.Exceptions import StoryscriptError
+from storyruntime.processing.Services import Services
+from storyruntime.processing.internal import Http
+from storyruntime.utils.HttpUtils import HttpUtils
 
 from tornado.httpclient import AsyncHTTPClient
 

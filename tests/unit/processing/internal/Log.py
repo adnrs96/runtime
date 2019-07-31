@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 from pytest import fixture, mark
 
-from storyengine.processing.Services import Services
-from storyengine.processing.internal import Log
+from storyruntime.processing.Services import Services
+from storyruntime.processing.internal import Log
 
 
 @fixture

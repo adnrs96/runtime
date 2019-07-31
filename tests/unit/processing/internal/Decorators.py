@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-from storyengine.processing.Services import Services
-from storyengine.processing.internal.Decorators import Decorators
+from storyruntime.processing.Services import Services
+from storyruntime.processing.internal.Decorators import Decorators
 
 
 def test_decorators_create_service(patch):

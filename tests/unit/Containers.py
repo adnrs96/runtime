@@ -5,18 +5,18 @@ from unittest.mock import MagicMock
 import pytest
 from pytest import fixture, mark
 
-from storyengine.AppConfig import Expose
-from storyengine.Containers import Containers
-from storyengine.Exceptions import ActionNotFound, \
+from storyruntime.AppConfig import Expose
+from storyruntime.Containers import Containers
+from storyruntime.Exceptions import ActionNotFound, \
     ContainerSpecNotRegisteredError, \
     EnvironmentVariableNotFound, K8sError
-from storyengine.Kubernetes import Kubernetes
-from storyengine.constants.LineConstants import LineConstants
-from storyengine.constants.ServiceConstants import ServiceConstants
-from storyengine.db.Database import Database
-from storyengine.entities.ContainerConfig import ContainerConfig
-from storyengine.entities.Volume import Volume
-from storyengine.processing import Stories
+from storyruntime.Kubernetes import Kubernetes
+from storyruntime.constants.LineConstants import LineConstants
+from storyruntime.constants.ServiceConstants import ServiceConstants
+from storyruntime.db.Database import Database
+from storyruntime.entities.ContainerConfig import ContainerConfig
+from storyruntime.entities.Volume import Volume
+from storyruntime.processing import Stories
 
 
 @fixture

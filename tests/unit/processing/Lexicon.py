@@ -5,17 +5,17 @@ from unittest.mock import MagicMock, Mock
 import pytest
 from pytest import fixture, mark
 
-from storyengine import Metrics
-from storyengine.Exceptions import InvalidKeywordUsage, StoryscriptError
-from storyengine.Story import Story
-from storyengine.Types import StreamingService
-from storyengine.constants.LineConstants import LineConstants
-from storyengine.constants.LineSentinels import LineSentinels
-from storyengine.constants.ServiceConstants import ServiceConstants
-from storyengine.processing import Lexicon, Stories
-from storyengine.processing.Mutations import Mutations
-from storyengine.processing.Services import Services
-from storyengine.utils.HttpUtils import HttpUtils
+from storyruntime import Metrics
+from storyruntime.Exceptions import InvalidKeywordUsage, StoryscriptError
+from storyruntime.Story import Story
+from storyruntime.Types import StreamingService
+from storyruntime.constants.LineConstants import LineConstants
+from storyruntime.constants.LineSentinels import LineSentinels
+from storyruntime.constants.ServiceConstants import ServiceConstants
+from storyruntime.processing import Lexicon, Stories
+from storyruntime.processing.Mutations import Mutations
+from storyruntime.processing.Services import Services
+from storyruntime.utils.HttpUtils import HttpUtils
 
 from tornado.httpclient import AsyncHTTPClient
 

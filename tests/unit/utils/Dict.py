@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import pytest
 
-from storyengine.utils import Dict
+from storyruntime.utils import Dict
 
 
 def test_dict_set_single():

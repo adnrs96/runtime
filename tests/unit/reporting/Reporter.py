@@ -4,10 +4,10 @@ from unittest import mock
 
 from pytest import fixture, mark
 
-from storyengine.Config import Config
-from storyengine.reporting.Reporter import Reporter
-from storyengine.reporting.agents.CleverTapAgent import CleverTapAgent
-from storyengine.reporting.agents.SentryAgent import SentryAgent
+from storyruntime.Config import Config
+from storyruntime.reporting.Reporter import Reporter
+from storyruntime.reporting.agents.CleverTapAgent import CleverTapAgent
+from storyruntime.reporting.agents.SentryAgent import SentryAgent
 
 
 @fixture

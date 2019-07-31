@@ -9,14 +9,14 @@ import prometheus_client
 
 from pytest import fixture, mark
 
-from storyengine import Version
-from storyengine.Apps import Apps
-from storyengine.Config import Config
-from storyengine.Logger import Logger
-from storyengine.Service import Service
-from storyengine.processing.Services import Services
-from storyengine.processing.internal import File, Http, Json, Log
-from storyengine.reporting.Reporter import Reporter
+from storyruntime import Version
+from storyruntime.Apps import Apps
+from storyruntime.Config import Config
+from storyruntime.Logger import Logger
+from storyruntime.Service import Service
+from storyruntime.processing.Services import Services
+from storyruntime.processing.internal import File, Http, Json, Log
+from storyruntime.reporting.Reporter import Reporter
 
 import tornado
 
@@ -66,7 +66,7 @@ async def test_server(patch, runner):
 @mark.asyncio
 async def test_init_wrapper(patch, async_mock):
     patch.object(Apps, 'init_all', new=async_mock())
-    import storyengine.Service as ServiceFile
+    import storyruntime.Service as ServiceFile
     ServiceFile.config = MagicMock()
     ServiceFile.logger = MagicMock()
     await Service.init_wrapper()
@@ -95,7 +95,7 @@ def test_service_sig_handler(patch):
 
 
 def test_service_shutdown(patch):
-    import storyengine.Service as ServiceFile
+    import storyruntime.Service as ServiceFile
     ServiceFile.server = MagicMock()
     patch.object(asyncio, 'get_event_loop')
     patch.object(Service, 'shutdown_app')

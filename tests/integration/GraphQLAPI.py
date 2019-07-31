@@ -2,8 +2,8 @@
 import pytest
 from pytest import mark
 
-from storyengine.Exceptions import ServiceNotFound
-from storyengine.GraphQLAPI import GraphQLAPI
+from storyruntime.Exceptions import ServiceNotFound
+from storyruntime.GraphQLAPI import GraphQLAPI
 
 
 @mark.asyncio

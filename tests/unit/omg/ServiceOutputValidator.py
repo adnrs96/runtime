@@ -4,10 +4,10 @@ from collections import deque
 import pytest
 from pytest import fixture, mark
 
-from storyengine.Types import Command, Service
-from storyengine.omg.Exceptions import FieldValueTypeMismatchOmgError, \
+from storyruntime.Types import Command, Service
+from storyruntime.omg.Exceptions import FieldValueTypeMismatchOmgError, \
     MissingFieldOmgError, UnsupportedTypeOmgError
-from storyengine.omg.ServiceOutputValidator import ServiceOutputValidator
+from storyruntime.omg.ServiceOutputValidator import ServiceOutputValidator
 
 
 @fixture

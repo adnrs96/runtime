@@ -11,15 +11,15 @@ from unittest.mock import MagicMock
 import pytest
 from pytest import fixture, mark
 
-from storyengine.AppConfig import AppConfig, Expose, KEY_EXPOSE
-from storyengine.Exceptions import K8sError
-from storyengine.Kubernetes import Kubernetes
-from storyengine.constants.LineConstants import LineConstants
-from storyengine.constants.ServiceConstants import ServiceConstants
-from storyengine.db.Database import Database
-from storyengine.entities.ContainerConfig import ContainerConfig
-from storyengine.entities.Volume import Volume
-from storyengine.utils.HttpUtils import HttpUtils
+from storyruntime.AppConfig import AppConfig, Expose, KEY_EXPOSE
+from storyruntime.Exceptions import K8sError
+from storyruntime.Kubernetes import Kubernetes
+from storyruntime.constants.LineConstants import LineConstants
+from storyruntime.constants.ServiceConstants import ServiceConstants
+from storyruntime.db.Database import Database
+from storyruntime.entities.ContainerConfig import ContainerConfig
+from storyruntime.entities.Volume import Volume
+from storyruntime.utils.HttpUtils import HttpUtils
 
 from tornado.httpclient import AsyncHTTPClient
 

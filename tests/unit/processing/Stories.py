@@ -6,14 +6,14 @@ from unittest import mock
 import pytest
 from pytest import mark
 
-from storyengine import Metrics
-from storyengine.Containers import Containers
-from storyengine.Exceptions import StoryscriptError, StoryscriptRuntimeError
-from storyengine.Story import Story
-from storyengine.constants import ContextConstants
-from storyengine.constants.LineSentinels import LineSentinels
-from storyengine.processing import Lexicon, Stories
-from storyengine.utils import Dict
+from storyruntime import Metrics
+from storyruntime.Containers import Containers
+from storyruntime.Exceptions import StoryscriptError, StoryscriptRuntimeError
+from storyruntime.Story import Story
+from storyruntime.constants import ContextConstants
+from storyruntime.constants.LineSentinels import LineSentinels
+from storyruntime.processing import Lexicon, Stories
+from storyruntime.utils import Dict
 
 
 def test_stories_story(patch, app, logger):

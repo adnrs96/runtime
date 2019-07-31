@@ -4,8 +4,8 @@ import time
 
 from pytest import mark
 
-from storyengine.Story import MAX_BYTES_LOGGING, Story
-from storyengine.utils import Dict, Resolver
+from storyruntime.Story import MAX_BYTES_LOGGING, Story
+from storyruntime.utils import Dict, Resolver
 
 
 def test_story_init(app, logger, story):

@@ -6,18 +6,18 @@ from collections import deque
 import pytest
 from pytest import fixture, mark
 
-from storyengine.App import App, AppData
-from storyengine.AppConfig import Expose
-from storyengine.Containers import Containers
-from storyengine.Exceptions import StoryscriptError
-from storyengine.Kubernetes import Kubernetes
-from storyengine.Types import StreamingService
-from storyengine.constants.ServiceConstants import ServiceConstants
-from storyengine.entities.Release import Release
-from storyengine.enums.AppEnvironment import AppEnvironment
-from storyengine.processing import Stories
-from storyengine.processing.Services import Command, Service, Services
-from storyengine.utils.HttpUtils import HttpUtils
+from storyruntime.App import App, AppData
+from storyruntime.AppConfig import Expose
+from storyruntime.Containers import Containers
+from storyruntime.Exceptions import StoryscriptError
+from storyruntime.Kubernetes import Kubernetes
+from storyruntime.Types import StreamingService
+from storyruntime.constants.ServiceConstants import ServiceConstants
+from storyruntime.entities.Release import Release
+from storyruntime.enums.AppEnvironment import AppEnvironment
+from storyruntime.processing import Stories
+from storyruntime.processing.Services import Command, Service, Services
+from storyruntime.utils.HttpUtils import HttpUtils
 
 from tornado.httpclient import AsyncHTTPClient, HTTPRequest, HTTPResponse
 

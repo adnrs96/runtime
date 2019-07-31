@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from pytest import mark, raises
 
-from storyengine.Exceptions import StoryscriptError, TooManyActiveApps, \
+from storyruntime.Exceptions import StoryscriptError, TooManyActiveApps, \
     TooManyServices, TooManyVolumes
 
 

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import typing
 
-from storyengine.entities.Release import Release
+from storyruntime.entities.Release import Release
 
 
 class ReportingEvent:

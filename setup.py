@@ -52,6 +52,6 @@ setup(
     ],
     entry_points="""
         [console_scripts]
-        storyscript-server=storyengine.Service:Service.main
+        storyscript-server=storyruntime.Service:Service.main
     """
 )

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from pytest import fixture
 
-from storyengine.Story import Story
+from storyruntime.Story import Story
 
 
 @fixture

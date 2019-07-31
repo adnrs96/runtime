@@ -3,8 +3,8 @@ from unittest.mock import MagicMock
 
 from pytest import fixture
 
-from storyengine.constants.LineConstants import LineConstants
-from storyengine.constants.ServiceConstants import ServiceConstants
+from storyruntime.constants.LineConstants import LineConstants
+from storyruntime.constants.ServiceConstants import ServiceConstants
 
 
 @fixture

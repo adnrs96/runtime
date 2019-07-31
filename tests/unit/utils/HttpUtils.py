@@ -5,7 +5,7 @@ from unittest.mock import MagicMock
 import pytest
 from pytest import mark
 
-from storyengine.utils.HttpUtils import HttpUtils
+from storyruntime.utils.HttpUtils import HttpUtils
 
 from tornado.httpclient import HTTPError
 

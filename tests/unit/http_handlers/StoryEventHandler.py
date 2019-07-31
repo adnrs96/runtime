@@ -4,12 +4,12 @@ import json
 import pytest
 from pytest import fixture, mark
 
-from storyengine.Apps import Apps
-from storyengine.constants import ContextConstants
-from storyengine.entities.Multipart import FileFormField
-from storyengine.http_handlers.StoryEventHandler import \
+from storyruntime.Apps import Apps
+from storyruntime.constants import ContextConstants
+from storyruntime.entities.Multipart import FileFormField
+from storyruntime.http_handlers.StoryEventHandler import \
     CLOUD_EVENTS_FILE_KEY, StoryEventHandler
-from storyengine.processing import Stories
+from storyruntime.processing import Stories
 
 import tornado
 from tornado import ioloop
