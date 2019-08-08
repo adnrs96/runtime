@@ -101,6 +101,8 @@ class Lexicon:
                     return await Lexicon.break_(logger, story, line)
                 elif method == 'continue':
                     return await Lexicon.continue_(logger, story, line)
+                elif method == 'while':
+                    return await Lexicon.while_(logger, story, line)
                 else:
                     raise NotImplementedError(
                         f'Unknown method to execute: {method}'
@@ -223,7 +225,8 @@ class Lexicon:
     async def continue_(logger, story, line):
         # Ensure that we're in a foreach loop. If we are, return CONTINUE,
         # otherwise raise an exception.
-        if Lexicon._does_line_have_parent_method(story, line, 'for'):
+        if Lexicon._does_line_have_parent_method(story, line, 'for') or \
+                Lexicon._does_line_have_parent_method(story, line, 'while'):
             return LineSentinels.CONTINUE
         else:
             # There is no parent, this is an illegal usage of continue.
@@ -355,6 +358,30 @@ class Lexicon:
         return Lexicon.line_number_or_none(story.next_block(line))
 
     @staticmethod
+    async def while_(logger, story, line):
+        should_break = False
+        while story.resolve(line['args'][0], encode=False) and \
+                not should_break:
+            next_line = story.line(line['enter'])
+
+            while next_line is not None \
+                    and story.line_has_parent(line['ln'], next_line):
+                result = await Lexicon.execute_line(
+                    logger, story, next_line['ln']
+                )
+
+                if result == LineSentinels.RETURN or \
+                        result == LineSentinels.BREAK:
+                    should_break = True
+                    break
+                elif result == LineSentinels.CONTINUE:
+                    break
+
+                next_line = story.line(result)
+
+        return Lexicon.line_number_or_none((story.next_block(line)))
+
+    @staticmethod
     async def when(logger, story, line):
         service = line[LineConstants.service]
 
@@ -388,6 +415,11 @@ class Lexicon:
         if cls._does_line_have_parent_method(story, line, 'when'):
             assert len(args) == 0, \
                 'return may not be used with a value in a when block'
+
+            return LineSentinels.RETURN
+        elif cls._does_line_have_parent_method(story, line, 'while'):
+            assert len(args) == 0, \
+                'return may not be used with a value in a while block'
 
             return LineSentinels.RETURN
         elif cls._does_line_have_parent_method(story, line, 'function'):
