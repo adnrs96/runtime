@@ -634,7 +634,18 @@ class TestSuite:
             TestCase(append='arr.replace(item: 2 by: 42)',
                      assertion=ContextAssertion(
                          key='arr', expected=[1, 42, 42, 3, 4, 4, 5, 5])),
-        ])
+        ]),
+    TestSuite(
+        preparation_lines='i = 0',
+        cases=[
+            TestCase(
+                append='while i < 10\n'
+                       '   i = i + 1\n'
+                       'outside = true',
+                assertion=[ContextAssertion(key='outside', expected=True),
+                           ContextAssertion(key='i', expected=10)])
+        ]
+    ),
 ])
 @mark.asyncio
 async def test_mutation(suite: TestSuite, logger):
