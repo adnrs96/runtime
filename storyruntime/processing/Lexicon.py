@@ -379,7 +379,7 @@ class Lexicon:
 
                 next_line = story.line(result)
 
-        return Lexicon.line_number_or_none((story.next_block(line)))
+        return Lexicon.line_number_or_none(story.next_block(line))
 
     @staticmethod
     async def when(logger, story, line):
