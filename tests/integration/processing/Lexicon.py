@@ -842,6 +842,43 @@ class TestSuite:
                            ContextAssertion(key='i', expected=10)])
         ]
     ),
+    TestSuite(
+        preparation_lines='i = 0',
+        cases=[
+            TestCase(
+                append='while i < 10000\n'
+                       '   i = i + 1\n'
+                       'outside = true',
+                assertion=[ContextAssertion(key='outside', expected=True),
+                           ContextAssertion(key='i', expected=10000)])
+        ]
+    ),
+    TestSuite(
+        preparation_lines='i = 0',
+        cases=[
+            TestCase(
+                append='while true\n'
+                       '   i = i + 1\n'
+                       'outside = true',
+                assertion=[ContextAssertion(key='outside', expected=True),
+                           ContextAssertion(key='i', expected=1000000)])
+        ]
+    ),
+    TestSuite(
+        preparation_lines='i = 0\na = 0',
+        cases=[
+            TestCase(
+                append='while i < 100\n'
+                       '    a = 0\n'
+                       '    while a < 10\n'
+                       '      i = i + 1\n'
+                       '      a = a + 1\n'
+                       'outside = true',
+                assertion=[ContextAssertion(key='outside', expected=True),
+                           ContextAssertion(key='i', expected=100),
+                           ContextAssertion(key='a', expected=10)])
+        ]
+    ),
 ])
 @mark.asyncio
 async def test_mutation(suite: TestSuite, logger):

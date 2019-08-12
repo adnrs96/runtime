@@ -419,24 +419,28 @@ class Lexicon:
     @staticmethod
     async def while_(logger, story, line):
         should_break = False
+        call_count = 0
         while story.resolve(line['args'][0], encode=False) and \
                 not should_break:
-            next_line = story.line(line['enter'])
 
-            while next_line is not None \
-                    and story.line_has_parent(line['ln'], next_line):
-                result = await Lexicon.execute_line(
-                    logger, story, next_line['ln']
+            # note this is only a temporary solution,
+            # and we will address this in the future.
+            if call_count >= 1000000:
+                logger.warn(
+                    "Call count limit reached within while loop. "
+                    "Only 1 million iterations allowed"
                 )
+                break
 
-                if result == LineSentinels.RETURN or \
-                        result == LineSentinels.BREAK:
-                    should_break = True
-                    break
-                elif result == LineSentinels.CONTINUE:
-                    break
+            result = await Lexicon.execute_block(logger, story, line)
 
-                next_line = story.line(result)
+            call_count += 1
+
+            if result == LineSentinels.CONTINUE:
+                continue
+            elif result == LineSentinels.BREAK or \
+                    result == LineSentinels.RETURN:
+                break
 
         return Lexicon.line_number_or_none(story.next_block(line))
 
