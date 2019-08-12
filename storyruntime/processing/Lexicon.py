@@ -148,9 +148,7 @@ class Lexicon:
                 and story.line_has_parent(parent_line['ln'], next_line):
             result = await Lexicon.execute_line(logger, story, next_line['ln'])
 
-            if result == LineSentinels.RETURN:
-                return None  # Block has completed execution.
-            elif LineSentinels.is_sentinel(result):
+            if LineSentinels.is_sentinel(result):
                 return result
 
             next_line = story.line(result)
