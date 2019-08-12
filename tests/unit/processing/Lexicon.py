@@ -640,10 +640,8 @@ async def test_lexicon_execute_block(patch, logger, story,
             mock.call('3'),
             mock.call('4')
         ] == story.line.mock_calls
-        if line_4_result == LineSentinels.RETURN:
-            assert execute_block_return is None
-        else:
-            assert execute_block_return == line_4_result
+        assert execute_block_return == line_4_result
+
     else:
         assert [
             mock.call(logger, story, '3'),
