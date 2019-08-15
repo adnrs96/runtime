@@ -135,9 +135,11 @@ def test_story_function_line_by_name(patch, story):
 def test_story_resolve(patch, story, encode):
     patch.object(Resolver, 'resolve')
     patch.object(Story, 'encode')
+    patch.object(Story, 'get_context', return_value={})
     obj = {'$OBJECT': 'string', 'string': 'string'}
     story.resolve(obj, encode)
-    Resolver.resolve.assert_called_with(obj, story.context)
+    Story.get_context.assert_called_once()
+    Resolver.resolve.assert_called_with(obj, {})
     assert Story.encode.call_count == encode
 
 
@@ -183,12 +185,12 @@ def test_story_end_line_output(patch, story):
 
 
 def test_story_end_line_output_assign(patch, story):
-    patch.object(Dict, 'set')
+    patch.object(Story, 'set_variable')
     story.results = {'1': {'start': 'start'}}
-    assign = {'paths': ['x']}
+    assign = ['x']
     story.end_line('1', output='output', assign=assign)
     assert story.results['1']['output'] == 'output'
-    Dict.set.assert_called_with(story.context, assign['paths'], 'output')
+    Story.set_variable.assert_called_with(assign, 'output')
 
 
 def test_story_end_line_output_as_list(patch, story):
@@ -267,7 +269,7 @@ def test_story_prepare_context(story, app):
     context = {'app': app.app_context}
     story.prepare(context=context)
     assert story.environment == app.environment
-    assert story.context == context
+    assert story._context == [context]
 
 
 def test_story_next_block_simple(patch, story):

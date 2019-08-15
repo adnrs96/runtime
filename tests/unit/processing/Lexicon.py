@@ -27,13 +27,6 @@ def line():
             'args': ['args'], 'next': '26'}
 
 
-@fixture
-def story(patch, story):
-    patch.many(story, ['end_line', 'resolve',
-                       'context', 'next_block'])
-    return story
-
-
 @mark.parametrize('name', ['foo_var', None])
 @mark.asyncio
 async def test_lexicon_execute(patch, logger, story, line, async_mock, name):
@@ -46,13 +39,14 @@ async def test_lexicon_execute(patch, logger, story, line, async_mock, name):
     patch.object(Services, 'execute', new=async_mock(return_value=output))
     patch.object(Lexicon, 'line_number_or_none')
     patch.object(story, 'line')
+    patch.object(story, 'end_line')
     result = await Lexicon.execute(logger, story, line)
     Services.execute.mock.assert_called_with(story, line)
 
     if name is not None:
         story.end_line.assert_called_with(line['ln'],
                                           output=output,
-                                          assign={'paths': [name]})
+                                          assign=[name])
     else:
         story.end_line.assert_called_with(line['ln'],
                                           output=output,
@@ -65,6 +59,7 @@ async def test_lexicon_execute(patch, logger, story, line, async_mock, name):
 async def test_lexicon_execute_none(patch, logger, story, line, async_mock):
     line['enter'] = None
     patch.object(story, 'line')
+    patch.object(story, 'end_line')
     story.line.return_value = None
     patch.object(Services, 'execute', new=async_mock())
     result = await Lexicon.execute(logger, story, line)
@@ -73,15 +68,15 @@ async def test_lexicon_execute_none(patch, logger, story, line, async_mock):
 
 @mark.asyncio
 async def test_lexicon_set(patch, logger, story):
-    story.context = {}
     patch.object(story, 'line')
+    patch.object(Story, 'end_line')
     patch.object(Lexicon, 'line_number_or_none')
     line = {'ln': '1', 'name': ['out'], 'args': ['values'], 'next': '2'}
-    story.resolve.return_value = 'resolved'
+    patch.object(Story, 'resolve', side_effect=['out', 'resolved'])
     result = await Lexicon.set(logger, story, line)
     story.resolve.assert_called_with(line['args'][0])
     story.end_line.assert_called_with(
-        line['ln'], assign={'paths': ['out'], '$OBJECT': 'path'},
+        line['ln'], assign=['out'],
         output='resolved')
     story.line.assert_called_with(line['next'])
     assert result == Lexicon.line_number_or_none()
@@ -89,10 +84,11 @@ async def test_lexicon_set(patch, logger, story):
 
 @mark.asyncio
 async def test_lexicon_set_mutation(patch, logger, story):
-    story.context = {}
     patch.object(story, 'line')
+    patch.object(Story, 'end_line')
+    patch.object(Story, 'resolve', side_effect=['out', 'values'])
     patch.object(Lexicon, 'line_number_or_none')
-    patch.object(Mutations, 'mutate')
+    patch.object(Mutations, 'mutate', return_value='mutated_result')
     line = {
         'ln': '1',
         'name': ['out'],
@@ -104,23 +100,21 @@ async def test_lexicon_set_mutation(patch, logger, story):
         ],
         'next': '2'
     }
-    Mutations.mutate.return_value = 'mutated_result'
     result = await Lexicon.set(logger, story, line)
     story.resolve.assert_called_with(line['args'][0])
-    story.end_line.assert_called_with(
-        line['ln'], assign={'paths': ['out'], '$OBJECT': 'path'},
-        output='mutated_result')
+    story.end_line.assert_called_with(line['ln'], assign=['out'],
+                                      output='mutated_result')
     story.line.assert_called_with(line['next'])
     Mutations.mutate.assert_called_with(line['args'][1],
-                                        story.resolve(), story, line)
+                                        'values', story, line)
     assert result == Lexicon.line_number_or_none()
 
 
 @mark.asyncio
 async def test_lexicon_set_invalid_operation(patch, logger, story):
-    story.context = {}
     patch.object(Lexicon, 'line_number_or_none')
     line = {
+        'name': None,
         'ln': '1',
         'args': [
             'values',
@@ -325,17 +319,17 @@ async def test_continue(logger, story, line, patch, valid_usage):
             await Lexicon.continue_(logger, story, line)
 
 
-def test_lexicon_unless(logger, story, line):
-    story.context = {}
+def test_lexicon_unless(logger, story, line, patch):
+    patch.object(Story, 'resolve')
     result = Lexicon.unless_condition(logger, story, line)
-    logger.log.assert_called_with('lexicon-unless', line, story.context)
+    logger.log.assert_called_with('lexicon-unless', line,
+                                  story.get_context())
     story.resolve.assert_called_with(line['args'][0], encode=False)
     assert result == line['exit']
 
 
-def test_lexicon_unless_false(logger, story, line):
-    story.context = {}
-    story.resolve.return_value = False
+def test_lexicon_unless_false(logger, story, line, patch):
+    patch.object(Story, 'resolve', return_value=False)
     assert Lexicon.unless_condition(logger, story, line) == line['enter']
 
 
@@ -347,7 +341,9 @@ async def test_lexicon_for_loop(patch, logger, story, line,
     iterated_over_items = []
 
     async def execute_block(our_logger, our_story, our_line):
-        iterated_over_items.append(story.context['element'])
+        iterated_over_items.append(story.resolve({
+            '$OBJECT': 'path', 'paths': ['element']
+        }))
         assert our_logger == logger
         assert our_story == story
         assert our_line == line
@@ -358,13 +354,14 @@ async def test_lexicon_for_loop(patch, logger, story, line,
     patch.object(Lexicon, 'execute_block', side_effect=execute_block)
     patch.object(story, 'next_block')
 
-    line['args'] = [
-        {'$OBJECT': 'path', 'paths': ['elements']}
-    ]
+    line.update({
+        'args': [
+            {'$OBJECT': 'path', 'paths': ['elements']}
+        ],
+        'output': ['element']
+    })
 
-    line['output'] = ['element']
-    story.context = {'elements': ['one', 'two', 'three']}
-    story.resolve.return_value = ['one', 'two', 'three']
+    story.set_context({'elements': ['one', 'two', 'three']})
     story.environment = {}
     result = await Lexicon.for_loop(logger, story, line)
 
@@ -375,11 +372,10 @@ async def test_lexicon_for_loop(patch, logger, story, line,
         assert iterated_over_items == ['one']
         assert result == execute_block_return
     else:
-        assert iterated_over_items == story.context['elements']
+        assert iterated_over_items == story.resolve({
+            '$OBJECT': 'path', 'paths': ['elements']
+        })
         assert result == Lexicon.line_number_or_none(story.next_block(line))
-
-    # Ensure no leakage of the element
-    assert story.context.get('element') is None
 
 
 @mark.asyncio
@@ -400,7 +396,7 @@ async def test_lexicon_execute_streaming_container(patch, story, async_mock):
     Services.start_container.mock.assert_called_with(story, line)
     story.end_line.assert_called_with(
         line['ln'], output=Services.start_container.mock.return_value,
-        assign={'paths': line.get('output')})
+        assign=line.get('output'))
     Metrics.container_start_seconds_total.labels().observe.assert_called_once()
     story.line.assert_called_with(line['next'])
     Lexicon.line_number_or_none.assert_called_with(story.line())
@@ -410,22 +406,16 @@ async def test_lexicon_execute_streaming_container(patch, story, async_mock):
 @mark.asyncio
 async def test_story_execute_function(patch, logger, story, async_mock):
     line = {'function': 'my_super_awesome_function'}
-    patch.many(story, ['function_line_by_name',
-                       'context_for_function_call', 'set_context'])
+    patch.many(story, ['function_line_by_name', 'context_for_function_call'])
     patch.object(Lexicon, 'execute_block', new=async_mock())
     first_context = {'first': 'context'}
 
-    story.context = first_context
+    story.set_context(first_context)
     await Lexicon.call(logger, story, line)
 
     story.function_line_by_name.assert_called_with(line['function'])
     story.context_for_function_call \
         .assert_called_with(line, story.function_line_by_name())
-
-    assert story.set_context.mock_calls == [
-        mock.call(story.context_for_function_call()),
-        mock.call(first_context)
-    ]
 
     Lexicon.execute_block.mock \
         .assert_called_with(logger, story, story.function_line_by_name())
@@ -511,21 +501,26 @@ async def test_lexicon_execute_block(patch, logger, story,
         side_effect=['4', line_4_result, '6']))
 
     line = story.line
-    story.context = {
+    story.set_context({
         ContextConstants.service_event: {'data': {'foo': 'bar'}}
-    }
+    })
 
     def proxy_line(*args):
         return line(*args)
 
     patch.object(story, 'line', side_effect=proxy_line)
 
-    execute_block_return = await Lexicon.execute_block(
-        logger, story, story.tree['2'])
+    execute_block_return = await Lexicon.execute_block(logger, story,
+                                                       story.tree['2'])
 
-    assert story.context[ContextConstants.service_output] == 'foo_client'
-    assert story.context['foo_client'] \
-        == story.context[ContextConstants.service_event]['data']
+    assert story.resolve({
+        '$OBJECT': 'path', 'paths': [ContextConstants.service_output]
+    }) == 'foo_client'
+    assert story.resolve({
+        '$OBJECT': 'path', 'paths': ['foo_client']
+    }) == story.resolve({
+        '$OBJECT': 'path', 'paths': [ContextConstants.service_event]
+    }).get('data')
 
     if LineSentinels.is_sentinel(line_4_result):
         assert [
@@ -727,9 +722,7 @@ async def test_lexicon_when(patch, story, async_mock, service_name):
         LineConstants.service: 'http'
     }
 
-    story.context = {
-        'http': ss
-    }
+    story.set_context({'http': ss})
 
     patch.object(story, 'next_block')
 

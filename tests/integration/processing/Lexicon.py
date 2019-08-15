@@ -895,6 +895,7 @@ async def run_test_case_in_suite(suite: TestSuite, case: TestCase, logger):
     app.stories = {
         story_name: story.result()
     }
+    app.story_global_context = {}
     app.environment = {}
 
     context = {}
@@ -925,7 +926,7 @@ async def run_test_case_in_suite(suite: TestSuite, case: TestCase, logger):
 
     for a in assertions:
         try:
-            a.verify(context)
+            a.verify(story.get_context())
         except BaseException as e:
             print(f'Assertion failure ({type(a)}) for story: \n{all_lines}')
             raise e
@@ -1097,19 +1098,6 @@ async def test_arrays(suite, logger):
                                            expected={
                                                'a': 1, 'b': {1: -1}, 'c': 3
                                            })
-            )
-        ]
-    ),
-    TestSuite(
-        preparation_lines='l = [1, 2, 3]\n'
-                          'foreach l as el\n'
-                          '  c = [4, 5, 6]\n'
-                          '  a = [1, 2, 3]\n'
-                          '  c[a[0]] = 1\n',
-        cases=[
-            TestCase(
-                assertion=ContextAssertion(key='c',
-                                           expected=[4, 1, 6])
             )
         ]
     )

@@ -10,7 +10,7 @@ def test_containers_format_command(story):
     Ensures a simple resolve can be performed
     """
     story_text = 'alpine echo msg:"foo"\n'
-    story.context = {}
+    story.set_context({})
     story.app.services = {
         'alpine': {
             ServiceConstants.config: {
@@ -31,7 +31,7 @@ def test_containers_format_command(story):
 
 def test_containers_format_command_no_arguments(story):
     story_text = 'alpine echo\n'
-    story.context = {}
+    story.set_context({})
     story.app.services = {
         'alpine': {
             ServiceConstants.config: {
