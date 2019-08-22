@@ -179,3 +179,29 @@ async def test_service_file_exists(patch, story, line):
     os.path.exists.assert_called_with(f'{story.get_tmp_dir()}/my_path')
 
     assert result == os.path.exists()
+
+
+@mark.asyncio
+async def test_service_file_isdir(patch, story, line):
+    patch.object(os.path, 'isdir')
+    story.execution_id = 'super_super_tmp'
+    resolved_args = {
+        'path': 'my_path'
+    }
+    result = await File.file_isdir(story, line, resolved_args)
+    os.path.isdir.assert_called_with(f'{story.get_tmp_dir()}/my_path')
+
+    assert result == os.path.isdir()
+
+
+@mark.asyncio
+async def test_service_file_isfile(patch, story, line):
+    patch.object(os.path, 'isfile')
+    story.execution_id = 'super_super_tmp'
+    resolved_args = {
+        'path': 'my_path'
+    }
+    result = await File.file_isfile(story, line, resolved_args)
+    os.path.isfile.assert_called_with(f'{story.get_tmp_dir()}/my_path')
+
+    assert result == os.path.isfile()
