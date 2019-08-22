@@ -74,6 +74,51 @@ async def file_read(story, line, resolved_args):
                                story=story, line=line)
 
 
+@Decorators.create_service(name='file', command='list', arguments={
+    'path': {'type': 'string'},
+    'recursive': {'type': 'boolean'}
+}, output_type='list')
+async def file_list(story, line, resolved_args):
+    path = safe_path(story, resolved_args.get('path', '.'))
+    recursive = resolved_args.get('recursive', False)
+    try:
+        if not os.path.exists(path):
+            raise StoryscriptError(
+                message=f'Failed to list directory: '
+                f'No such directory: \'{path}\'',
+                story=story, line=line
+            )
+
+        if not os.path.isdir(path):
+            raise StoryscriptError(
+                message=f'Failed to list directory: '
+                f'The provided path is not a directory: \'{path}\'',
+                story=story, line=line
+            )
+
+        if recursive:
+            items = []
+            tmp_dir = story.get_tmp_dir()
+            for root, dirs, files in os.walk(path, topdown=False):
+                for name in files:
+                    items.append(
+                        os.path.join(root, name).replace(tmp_dir, '')
+                    )
+                for name in dirs:
+                    items.append(
+                        os.path.join(root, name).replace(tmp_dir, '')
+                    )
+
+            items.sort()
+
+            return items
+        else:
+            return os.listdir(path)
+    except IOError as e:
+        raise StoryscriptError(message=f'Failed to list directory: {e}',
+                               story=story, line=line)
+
+
 @Decorators.create_service(name='file', command='remove', arguments={
     'path': {'type': 'string'},
     'recursive': {'type': 'boolean'}

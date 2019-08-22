@@ -132,6 +132,33 @@ async def test_service_file_read_exc(patch, story, line, service_patch, exc):
 
 
 @mark.asyncio
+@mark.parametrize('recursive', [True, False])
+async def test_service_file_list(patch, story, line, recursive, file_io):
+    story.execution_id = 'super_super_tmp'
+    resolved_args = {
+        'path': 'my_path',
+        'recursive': recursive
+    }
+    patch.object(os.path, 'exists', return_value=True)
+    patch.object(os.path, 'isdir', return_value=True)
+    patch.object(os.path, 'join')
+    patch.object(os, 'walk')
+    patch.object(os, 'listdir')
+
+    await File.file_list(story, line, resolved_args)
+
+    path = f'{story.get_tmp_dir()}/my_path'
+
+    os.path.exists.assert_called_with(path)
+    os.path.isdir.assert_called_with(path)
+
+    if recursive:
+        os.walk.assert_called_with(path, topdown=False)
+    else:
+        os.listdir.assert_called_with(path)
+
+
+@mark.asyncio
 @mark.parametrize('isdir', [True, False])
 @mark.parametrize('recursive', [True, False])
 async def test_service_file_remove(patch, story, line,
