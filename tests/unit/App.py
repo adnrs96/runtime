@@ -231,6 +231,7 @@ def test_app_create_tmp_dir(patch, app):
     pathlib.Path().mkdir.assert_called_with(
         parents=True, mode=0o700, exist_ok=True)
 
+
 @mark.asyncio
 async def test_start_services_completed(patch, app, async_mock):
     app.stories = {}

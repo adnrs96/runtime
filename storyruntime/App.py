@@ -108,7 +108,7 @@ class App:
         path = self.get_tmp_dir()
         pathlib.Path(path).mkdir(parents=True, mode=0o700, exist_ok=True)
         self.logger.debug(f'Created tmp dir {path} (on-demand)')
-        
+
     async def cleanup_tmp_dir(self):
         tmpdir = self.get_tmp_dir()
 
