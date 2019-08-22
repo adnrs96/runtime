@@ -160,7 +160,7 @@ async def file_exists(story, line, resolved_args):
     return os.path.exists(path)
 
 
-@Decorators.create_service(name='file', command='isdir', arguments={
+@Decorators.create_service(name='file', command='isDir', arguments={
     'path': {'type': 'string'}
 }, output_type='boolean')
 async def file_isdir(story, line, resolved_args):
