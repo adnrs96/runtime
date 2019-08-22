@@ -396,6 +396,7 @@ async def test_app_destroy_no_stories(patch, async_mock, app):
     app.stories = None
     patch.object(Kubernetes, 'clean_namespace', new=async_mock())
     patch.object(app, 'clear_subscriptions_synapse', new=async_mock())
+    patch.object(app, 'cleanup_tmp_dir', new=async_mock())
     assert await app.destroy() is None
 
 
