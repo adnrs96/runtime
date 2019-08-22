@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import os
 import pathlib
+import shutil
 
 from .Decorators import Decorators
 from ...Exceptions import StoryscriptError
@@ -119,36 +120,61 @@ async def file_list(story, line, resolved_args):
                                story=story, line=line)
 
 
-@Decorators.create_service(name='file', command='remove', arguments={
-    'path': {'type': 'string'},
-    'recursive': {'type': 'boolean'}
+@Decorators.create_service(name='file', command='removeDir', arguments={
+    'path': {'type': 'string'}
 })
-async def file_remove(story, line, resolved_args):
+async def file_remove_dir(story, line, resolved_args):
     path = safe_path(story, resolved_args['path'])
-    recursive = resolved_args.get('recursive', False)
     try:
         if not os.path.exists(path):
             raise StoryscriptError(
-                message=f'Failed to remove file or directory: '
+                message=f'Failed to remove directory: '
                         f'No such file or directory: \'{path}\'',
                 story=story, line=line
             )
 
+        if not os.path.isdir(path):
+            raise StoryscriptError(
+                message=f'Failed to remove directory: '
+                        f'The given path is a file: \'{path}\'',
+                story=story, line=line
+            )
+        else:
+            shutil.rmtree(path, ignore_errors=True)
+
+    except IOError as e:
+        raise StoryscriptError(
+            message=f'Failed to remove directory: {e}',
+                    story=story, line=line
+        )
+
+
+@Decorators.create_service(name='file', command='removeFile', arguments={
+    'path': {'type': 'string'}
+})
+async def file_remove_file(story, line, resolved_args):
+    path = safe_path(story, resolved_args['path'])
+    try:
+        if not os.path.exists(path):
+            raise StoryscriptError(
+                message=f'Failed to remove file: '
+                f'No such file or directory: \'{path}\'',
+                story=story, line=line
+            )
+
         if os.path.isdir(path):
-            if recursive:
-                for root, dirs, files in os.walk(path, topdown=False):
-                    for name in files:
-                        os.remove(os.path.join(root, name))
-                    for name in dirs:
-                        os.rmdir(os.path.join(root, name))
-            os.rmdir(path)
+            raise StoryscriptError(
+                message=f'Failed to remove file: '
+                f'The given path is a directory: \'{path}\'',
+                story=story, line=line
+            )
         else:
             os.remove(path)
 
     except IOError as e:
         raise StoryscriptError(
-            message=f'Failed to remove file or directory: {e}',
-                    story=story, line=line
+            message=f'Failed to remove file: {e}',
+            story=story, line=line
         )
 
 

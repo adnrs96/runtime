@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import os
+import shutil
 
 import pytest
 from pytest import fixture, mark
@@ -159,47 +160,72 @@ async def test_service_file_list(patch, story, line, recursive, file_io):
 
 
 @mark.asyncio
-@mark.parametrize('isdir', [True, False])
-@mark.parametrize('recursive', [True, False])
-async def test_service_file_remove(patch, story, line,
-                                   isdir, recursive, file_io):
+async def test_service_file_remove_dir(patch, story, line, file_io):
     story.execution_id = 'super_super_tmp'
     resolved_args = {
-        'path': 'my_path',
-        'recursive': recursive
+        'path': 'my_path'
     }
     patch.object(os.path, 'exists', return_value=True)
-    patch.object(os.path, 'isdir', return_value=isdir)
-    patch.object(os, 'walk')
-    patch.object(os, 'rmdir')
-    patch.object(os, 'remove')
+    patch.object(os.path, 'isdir', return_value=True)
+    patch.object(shutil, 'rmtree')
 
-    await File.file_remove(story, line, resolved_args)
+    await File.file_remove_dir(story, line, resolved_args)
 
     path = f'{story.get_tmp_dir()}/my_path'
 
     os.path.exists.assert_called_with(path)
     os.path.isdir.assert_called_with(path)
 
-    if isdir:
-        os.rmdir.assert_called_with(path)
-        if recursive:
-            os.walk.assert_called()
-
-    else:
-        os.remove.assert_called_with(path)
+    shutil.rmtree.assert_called_with(path, ignore_errors=True)
 
 
 @mark.asyncio
-async def test_service_file_remove_exc(patch, story, line, file_io):
+@mark.parametrize('exists', [True, False])
+async def test_service_file_remove_dir_exc(patch, story, line,
+                                           exists, file_io):
     story.execution_id = 'super_super_tmp'
     resolved_args = {
         'path': 'my_path'
     }
-    patch.object(os.path, 'exists', return_value=False)
+    patch.object(os.path, 'exists', return_value=exists)
+    patch.object(os.path, 'isdir', return_value=False)
 
     with pytest.raises(StoryscriptError):
-        await File.file_remove(story, line, resolved_args)
+        await File.file_remove_dir(story, line, resolved_args)
+
+
+@mark.asyncio
+async def test_service_file_remove_file(patch, story, line, file_io):
+    story.execution_id = 'super_super_tmp'
+    resolved_args = {
+        'path': 'my_path'
+    }
+    patch.object(os.path, 'exists', return_value=True)
+    patch.object(os.path, 'isdir', return_value=False)
+    patch.object(os, 'remove')
+
+    await File.file_remove_file(story, line, resolved_args)
+
+    path = f'{story.get_tmp_dir()}/my_path'
+
+    os.path.exists.assert_called_with(path)
+    os.path.isdir.assert_called_with(path)
+    os.remove.assert_called_with(path)
+
+
+@mark.asyncio
+@mark.parametrize('exists', [True, False])
+async def test_service_file_remove_file_exc(patch, story, line,
+                                           exists, file_io):
+    story.execution_id = 'super_super_tmp'
+    resolved_args = {
+        'path': 'my_path'
+    }
+    patch.object(os.path, 'exists', return_value=exists)
+    patch.object(os.path, 'isdir', return_value=True)
+
+    with pytest.raises(StoryscriptError):
+        await File.file_remove_file(story, line, resolved_args)
 
 
 @mark.asyncio
