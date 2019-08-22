@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import asyncio
 import json
+import pathlib
 from collections import deque
 
 import pytest
@@ -211,6 +212,24 @@ async def test_app_bootstrap(patch, app, async_mock):
     assert app.run_stories.mock.call_count == 1
     assert app.start_services.mock.call_count == 1
 
+
+def test_app_get_tmp_dir(app):
+    assert app.get_tmp_dir() == '/tmp/story.app_uuid'
+
+
+def test_app_create_tmp_dir(patch, app):
+    patch.object(pathlib, 'Path')
+    patch.object(app, 'get_tmp_dir')
+
+    # Yes, called twice to ensure the dir is created just once.
+    app.create_tmp_dir()
+    app.create_tmp_dir()
+
+    app.get_tmp_dir.assert_called_once()
+
+    pathlib.Path.assert_called_with(app.get_tmp_dir())
+    pathlib.Path().mkdir.assert_called_with(
+        parents=True, mode=0o700, exist_ok=True)
 
 @mark.asyncio
 async def test_start_services_completed(patch, app, async_mock):
@@ -425,7 +444,9 @@ async def test_app_destroy(patch, app, async_mock):
     app.entrypoint = ['foo', 'bar']
     patch.object(app, 'unsubscribe_all', new=async_mock())
     patch.object(app, 'clear_subscriptions_synapse', new=async_mock())
+    patch.object(app, 'cleanup_tmp_dir', new=async_mock())
     await app.destroy()
 
     app.unsubscribe_all.mock.assert_called()
     app.clear_subscriptions_synapse.mock.assert_called()
+    app.cleanup_tmp_dir.mock.assert_called()

@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 import asyncio
 import json
+import os
+import pathlib
 from collections import namedtuple
 
 from requests.structures import CaseInsensitiveDict
@@ -79,6 +81,7 @@ class App:
             'hostname': f'{self.app_dns}.{self.config.APP_DOMAIN}',
             'version': self.version
         }
+        self._tmp_dir_created = False
 
     def image_pull_policy(self):
         if self.always_pull_images is True:
@@ -95,6 +98,37 @@ class App:
         await self.start_services()
         await self.expose_services()
         await self.run_stories()
+
+    def create_tmp_dir(self):
+        if self._tmp_dir_created:
+            return
+
+        self._tmp_dir_created = True
+
+        path = self.get_tmp_dir()
+        pathlib.Path(path).mkdir(parents=True, mode=0o700, exist_ok=True)
+        self.logger.debug(f'Created tmp dir {path} (on-demand)')
+        
+    async def cleanup_tmp_dir(self):
+        tmpdir = self.get_tmp_dir()
+
+        for root, dirs, files in os.walk(tmpdir, topdown=False):
+            for name in files:
+                path = os.path.join(root, name)
+                self.logger.debug(f'Removing file from tmp dir: {path}')
+                os.remove(path)
+            for name in dirs:
+                path = os.path.join(root, name)
+                self.logger.debug(f'Removing directory from tmp dir: {path}')
+                os.rmdir(path)
+
+        self.logger.debug(f'Removing tmp dir: {tmpdir}')
+
+        if os.path.exists(tmpdir):
+            os.rmdir(tmpdir)
+
+    def get_tmp_dir(self):
+        return f'/tmp/story.{self.app_id}'
 
     async def expose_services(self):
         for expose in self.app_config.get_expose_config():
@@ -255,3 +289,4 @@ class App:
         """
         await self.clear_subscriptions_synapse()
         await self.unsubscribe_all()
+        await self.cleanup_tmp_dir()
