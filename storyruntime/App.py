@@ -115,7 +115,7 @@ class App:
 
         self.logger.debug(f'Removing tmp dir: {tmpdir}')
 
-        shutil.rmtree(tmpdir, ignore_errors=False)
+        shutil.rmtree(tmpdir, ignore_errors=True)
 
     def get_tmp_dir(self):
         return f'/tmp/story.{self.app_id}'

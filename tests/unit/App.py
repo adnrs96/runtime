@@ -236,7 +236,7 @@ def test_app_create_tmp_dir(patch, app):
 @mark.asyncio
 async def test_app_cleanup_tmp_dir(patch, app, async_mock):
     path = f'/tmp/story.{app.app_id}'
-    patch.object(app, 'get_tmp_dir', new=async_mock())
+    patch.object(app, 'get_tmp_dir', return_value=path)
     patch.object(shutil, 'rmtree')
 
     await app.cleanup_tmp_dir()
