@@ -3,6 +3,7 @@ import asyncio
 import json
 import os
 import pathlib
+import shutil
 from collections import namedtuple
 
 from requests.structures import CaseInsensitiveDict
@@ -112,20 +113,9 @@ class App:
     async def cleanup_tmp_dir(self):
         tmpdir = self.get_tmp_dir()
 
-        for root, dirs, files in os.walk(tmpdir, topdown=False):
-            for name in files:
-                path = os.path.join(root, name)
-                self.logger.debug(f'Removing file from tmp dir: {path}')
-                os.remove(path)
-            for name in dirs:
-                path = os.path.join(root, name)
-                self.logger.debug(f'Removing directory from tmp dir: {path}')
-                os.rmdir(path)
-
         self.logger.debug(f'Removing tmp dir: {tmpdir}')
 
-        if os.path.exists(tmpdir):
-            os.rmdir(tmpdir)
+        shutil.rmtree(tmpdir, ignore_errors=False)
 
     def get_tmp_dir(self):
         return f'/tmp/story.{self.app_id}'
@@ -287,6 +277,15 @@ class App:
         Unsubscribe from all existing subscriptions,
         and delete the namespace.
         """
-        await self.clear_subscriptions_synapse()
-        await self.unsubscribe_all()
+        try:
+            await self.clear_subscriptions_synapse()
+        except BaseException as e:
+            self.logger.error(f'Error clearing synapse subscriptions: {e}')
+        try:
+            await self.unsubscribe_all()
+        except BaseException as e:
+            self.logger.error(
+                f'Failed to unsubscribe synapse subscriptions: {e}'
+            )
+
         await self.cleanup_tmp_dir()

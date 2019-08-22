@@ -2,6 +2,7 @@
 import asyncio
 import json
 import pathlib
+import shutil
 from collections import deque
 
 import pytest
@@ -230,6 +231,17 @@ def test_app_create_tmp_dir(patch, app):
     pathlib.Path.assert_called_with(app.get_tmp_dir())
     pathlib.Path().mkdir.assert_called_with(
         parents=True, mode=0o700, exist_ok=True)
+
+
+async def test_app_cleanup_tmp_dir(patch, app, async_mock):
+    path = f'/tmp/story.{app.app_id}'
+    patch.object(app, 'get_tmp_dir', new=async_mock())
+    patch.object(shutil, 'rmtree')
+
+    await app.cleanup_tmp_dir()
+
+    app.get_tmp_dir.assert_called()
+    shutil.rmtree.assert_called_with(path, ignore_errors=True)
 
 
 @mark.asyncio
