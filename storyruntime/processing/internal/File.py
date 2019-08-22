@@ -83,7 +83,8 @@ async def file_remove(story, line, resolved_args):
     try:
         if not os.path.exists(path):
             raise StoryscriptError(
-                message=f'Failed to remove file or directory: No such file or directory: \'{path}\'',
+                message=f'Failed to remove file or directory: '
+                        f'No such file or directory: \'{path}\'',
                 story=story, line=line
             )
 
@@ -93,8 +94,10 @@ async def file_remove(story, line, resolved_args):
             os.remove(path)
 
     except IOError as e:
-        raise StoryscriptError(message=f'Failed to remove file or directory: {e}',
-                               story=story, line=line)
+        raise StoryscriptError(
+            message=f'Failed to remove file or directory: {e}',
+                    story=story, line=line
+        )
 
 
 @Decorators.create_service(name='file', command='exists', arguments={
