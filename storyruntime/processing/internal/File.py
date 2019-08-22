@@ -80,6 +80,7 @@ async def file_read(story, line, resolved_args):
 })
 async def file_remove(story, line, resolved_args):
     path = safe_path(story, resolved_args['path'])
+    recursive = resolved_args.get('recursive', False)
     try:
         if not os.path.exists(path):
             raise StoryscriptError(
@@ -89,6 +90,12 @@ async def file_remove(story, line, resolved_args):
             )
 
         if os.path.isdir(path):
+            if recursive:
+                for root, dirs, files in os.walk(path, topdown=False):
+                    for name in files:
+                        os.remove(os.path.join(root, name))
+                    for name in dirs:
+                        os.rmdir(os.path.join(root, name))
             os.rmdir(path)
         else:
             os.remove(path)
