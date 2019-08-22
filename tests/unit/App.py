@@ -233,6 +233,7 @@ def test_app_create_tmp_dir(patch, app):
         parents=True, mode=0o700, exist_ok=True)
 
 
+@mark.asyncio
 async def test_app_cleanup_tmp_dir(patch, app, async_mock):
     path = f'/tmp/story.{app.app_id}'
     patch.object(app, 'get_tmp_dir', new=async_mock())
