@@ -132,6 +132,43 @@ async def test_service_file_read_exc(patch, story, line, service_patch, exc):
 
 
 @mark.asyncio
+@mark.parametrize('isdir', [True, False])
+async def test_service_file_remove(patch, story, line, isdir, file_io):
+    story.execution_id = 'super_super_tmp'
+    resolved_args = {
+        'path': 'my_path'
+    }
+    patch.object(os.path, 'exists', return_value=True)
+    patch.object(os.path, 'isdir', return_value=isdir)
+    patch.object(os, 'rmdir')
+    patch.object(os, 'remove')
+
+    await File.file_remove(story, line, resolved_args)
+
+    path = f'{story.get_tmp_dir()}/my_path'
+
+    os.path.exists.assert_called_with(path)
+    os.path.isdir.assert_called_with(path)
+
+    if isdir:
+        os.rmdir.assert_called_with(path)
+    else:
+        os.remove.assert_called_with(path)
+
+
+@mark.asyncio
+async def test_service_file_remove_exc(patch, story, line, file_io):
+    story.execution_id = 'super_super_tmp'
+    resolved_args = {
+        'path': 'my_path'
+    }
+    patch.object(os.path, 'exists', return_value=False)
+
+    with pytest.raises(StoryscriptError):
+        await File.file_remove(story, line, resolved_args)
+
+
+@mark.asyncio
 async def test_service_file_exists(patch, story, line):
     patch.object(os.path, 'exists')
     story.execution_id = 'super_super_tmp'
