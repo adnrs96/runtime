@@ -215,8 +215,7 @@ async def test_service_file_remove_file(patch, story, line, file_io):
 
 @mark.asyncio
 @mark.parametrize('exists', [True, False])
-async def test_service_file_remove_file_exc(patch, story, line,
-                                           exists, file_io):
+async def test_service_file_remove_file_exc(patch, story, line, exists):
     story.execution_id = 'super_super_tmp'
     resolved_args = {
         'path': 'my_path'
