@@ -97,24 +97,19 @@ async def file_list(story, line, resolved_args):
                 story=story, line=line
             )
 
+        tmp_dir = story.get_tmp_dir()
+
+        items = []
         if recursive:
-            items = []
-            tmp_dir = story.get_tmp_dir()
-            for root, dirs, files in os.walk(path, topdown=False):
-                for name in files:
-                    items.append(
-                        os.path.join(root, name).replace(tmp_dir, '')
-                    )
-                for name in dirs:
-                    items.append(
-                        os.path.join(root, name).replace(tmp_dir, '')
-                    )
+            p = pathlib.Path(path)
 
-            items.sort()
+            for child in p.iterdir():
+                items.append(str(child).replace(tmp_dir, ''))
 
-            return items
         else:
-            return os.listdir(path)
+            for path in os.listdir(path):
+                items.append(path.replace(tmp_dir, '/'))
+        return items
     except IOError as e:
         raise StoryscriptError(message=f'Failed to list directory: {e}',
                                story=story, line=line)
