@@ -76,7 +76,7 @@ async def file_read(story, line, resolved_args):
     except FileNotFoundError:
         raise StoryscriptError(
             message=f'Failed to read file: No such file: '
-            f'\'{clean_path(path)}\'',
+            f'\'{clean_path(story, path)}\'',
             story=story, line=line
         )
     except IOError as e:
