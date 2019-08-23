@@ -70,6 +70,13 @@ async def file_read(story, line, resolved_args):
             mode = 'r'
         with open(path, mode) as f:
             return f.read()
+    except FileNotFoundError:
+        clean_path = (path.replace(story.get_tmp_dir(), ''))
+        raise StoryscriptError(
+            message=f'Failed to read file: No such file: '
+            f'\'{clean_path}\'',
+            story=story, line=line
+        )
     except IOError as e:
         raise StoryscriptError(message=f'Failed to read file: {e}',
                                story=story, line=line)
