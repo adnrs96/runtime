@@ -73,5 +73,67 @@ async def http_post(story, line, resolved_args):
     return response.body.decode(charset)
 
 
+@Decorators.create_service(name='http', command='request', arguments={
+    'url': {'type': 'string'},
+    'headers': {'type': 'map'},
+    'body': {'type': 'string'},
+    'method': {'type': 'string'}
+}, output_type='any')
+async def http_request(story, line, resolved_args):
+    method = resolved_args.get('method', 'get') or 'get'
+    http_client = AsyncHTTPClient()
+    kwargs = {'method': method.upper(), 'ca_certs': certifi.where()}
+
+    headers = resolved_args.get('headers') or {}
+    if headers.get('User-Agent') is None:
+        headers['User-Agent'] = 'Storyscript/1.0-beta'
+
+    kwargs['headers'] = headers
+
+    if resolved_args.get('body'):
+        kwargs['body'] = resolved_args['body']
+        if isinstance(kwargs['body'], dict):
+            kwargs['body'] = json.dumps(kwargs['body'])
+
+    response = await HttpUtils.fetch_with_retry(3, story.logger,
+                                                resolved_args['url'],
+                                                http_client, kwargs)
+
+    resp_headers = {}
+
+    for header in response.headers:
+        resp_headers[header] = response.headers[header]
+
+    charset = 'utf-8'
+
+    content_type = response.headers.get('Content-Type')
+    if content_type is not None and \
+            'charset' in content_type:
+        parsed = cgi.parse_header(content_type)
+
+        if len(parsed) > 1:
+            charset = parsed[1].get('charset')
+
+    body = response.body.decode(charset)
+
+    if 'application/json' in response.headers.get('Content-Type'):
+        try:
+            body = json.loads(body)
+        except json.decoder.JSONDecodeError:
+            story.logger.warn(
+                f'Failed to parse response as JSON, '
+                f'although application/json was specified! '
+                f'response={response.body.decode(charset)}')
+
+    # currently returning a json obj, rather
+    # than something like a namedtuple, for simplicity
+    return {
+        'status_code': response.code,
+        'status': response.reason,
+        'headers': resp_headers,
+        'body': body
+    }
+
+
 def init():
     pass
