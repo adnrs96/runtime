@@ -135,7 +135,8 @@ async def test_service_file_read_exc(patch, story, line, service_patch, exc):
 
 @mark.asyncio
 @mark.parametrize('recursive', [True, False])
-async def test_service_file_list(magic, patch, story, line, recursive, file_io):
+async def test_service_file_list(magic, patch, story, line,
+                                 recursive, file_io):
     story.execution_id = 'super_super_tmp'
     resolved_args = {
         'path': 'my_path',
