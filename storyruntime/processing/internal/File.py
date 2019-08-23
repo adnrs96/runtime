@@ -96,14 +96,16 @@ async def file_list(story, line, resolved_args):
         if not os.path.exists(path):
             raise StoryscriptError(
                 message=f'Failed to list directory: '
-                f'No such directory: \'{path}\'',
+                f'No such directory: '
+                f'\'{clean_path(story, path)}\'',
                 story=story, line=line
             )
 
         if not os.path.isdir(path):
             raise StoryscriptError(
                 message=f'Failed to list directory: '
-                f'The provided path is not a directory: \'{path}\'',
+                        f'The provided path is not a directory: '
+                        f'\'{clean_path(story, path)}\'',
                 story=story, line=line
             )
 
@@ -120,6 +122,11 @@ async def file_list(story, line, resolved_args):
             for path in os.listdir(path):
                 items.append(path.replace(tmp_dir, '/'))
         return items
+    except FileNotFoundError:
+        raise StoryscriptError(
+            message=f'Failed to read file: No such file: '
+                    f'\'{clean_path(story, path)}\'',
+            story=story, line=line)
     except IOError as e:
         raise StoryscriptError(message=f'Failed to list directory: {e}',
                                story=story, line=line)
@@ -134,14 +141,16 @@ async def file_remove_dir(story, line, resolved_args):
         if not os.path.exists(path):
             raise StoryscriptError(
                 message=f'Failed to remove directory: '
-                        f'No such file or directory: \'{path}\'',
+                        f'No such file or directory: '
+                        f'\'{clean_path(story, path)}\'',
                 story=story, line=line
             )
 
         if not os.path.isdir(path):
             raise StoryscriptError(
                 message=f'Failed to remove directory: '
-                        f'The given path is a file: \'{path}\'',
+                        f'The given path is a file: '
+                        f'\'{clean_path(story, path)}\'',
                 story=story, line=line
             )
         else:
@@ -163,14 +172,16 @@ async def file_remove_file(story, line, resolved_args):
         if not os.path.exists(path):
             raise StoryscriptError(
                 message=f'Failed to remove file: '
-                f'No such file or directory: \'{path}\'',
+                f'No such file or directory: '
+                f'\'{clean_path(story, path)}\'',
                 story=story, line=line
             )
 
         if os.path.isdir(path):
             raise StoryscriptError(
                 message=f'Failed to remove file: '
-                f'The given path is a directory: \'{path}\'',
+                f'The given path is a directory: '
+                f'\'{clean_path(story, path)}\'',
                 story=story, line=line
             )
         else:
@@ -196,7 +207,14 @@ async def file_exists(story, line, resolved_args):
 }, output_type='boolean')
 async def file_isdir(story, line, resolved_args):
     path = safe_path(story, resolved_args['path'])
-    return os.path.isdir(path)
+    try:
+
+        return os.path.isdir(path)
+    except FileNotFoundError:
+        raise StoryscriptError(
+            message=f'No such file or directory: '
+            f'\'{clean_path(story, path)}\'',
+            story=story, line=line)
 
 
 @Decorators.create_service(name='file', command='isFile', arguments={
@@ -204,7 +222,13 @@ async def file_isdir(story, line, resolved_args):
 }, output_type='boolean')
 async def file_isfile(story, line, resolved_args):
     path = safe_path(story, resolved_args['path'])
-    return os.path.isfile(path)
+    try:
+        return os.path.isfile(path)
+    except FileNotFoundError:
+        raise StoryscriptError(
+            message=f'No such file or directory: '
+            f'\'{clean_path(story, path)}\'',
+            story=story, line=line)
 
 
 def init():
