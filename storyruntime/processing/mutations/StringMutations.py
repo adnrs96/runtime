@@ -33,7 +33,7 @@ class StringMutations:
         by = story.argument_by_name(mutation, 'by')
 
         # signifies that we wish to split this string into a list
-        if by is None or by is "":
+        if by is None or by is '':
             return list(value)
 
         return value.split(by)
