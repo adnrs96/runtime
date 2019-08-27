@@ -283,11 +283,11 @@ class TestSuite:
                           'c = []\n',
         cases=[
             TestCase(append='foreach a as elem\n'
-                            '   b append item: elem\n'
+                            '   b = b append item: elem\n'
                             '   foreach b as elem2\n'
                             '       if elem2 > 1\n'
                             '           break\n'
-                            '       c append item: elem2\n',
+                            '       c = c append item: elem2\n',
                      assertion=[
                          ContextAssertion(key='b', expected=[1, 2, 3, 4, 5]),
                          ContextAssertion(key='c', expected=[1, 1, 1, 1, 1])
@@ -610,22 +610,22 @@ class TestSuite:
             TestCase(append='actual = arr.length()',
                      assertion=ContextAssertion(key='actual', expected=8)),
 
-            TestCase(append='arr.append(item: 6)',
+            TestCase(append='arr = arr.append(item: 6)',
                      assertion=ContextAssertion(
                          key='arr', expected=[1, 2, 2, 3, 4, 4, 5, 5, 6])),
 
-            TestCase(append='arr.prepend(item: 1)',
+            TestCase(append='arr = arr.prepend(item: 1)',
                      assertion=ContextAssertion(
                          key='arr', expected=[1, 1, 2, 2, 3, 4, 4, 5, 5])),
 
             TestCase(append='r = arr.random()',
                      assertion=IsANumberAssertion(key='r')),
 
-            TestCase(append='arr.reverse()',
+            TestCase(append='arr = arr.reverse()',
                      assertion=ContextAssertion(
                          key='arr', expected=[5, 5, 4, 4, 3, 2, 2, 1])),
 
-            TestCase(append='arr.sort()',
+            TestCase(append='arr = arr.sort()',
                      assertion=ContextAssertion(
                          key='arr', expected=[1, 2, 2, 3, 4, 4, 5, 5])),
 
@@ -638,9 +638,9 @@ class TestSuite:
             TestCase(append='sum = arr.sum()',
                      assertion=ContextAssertion(key='sum', expected=26)),
 
-            TestCase(append='arr.unique()',
+            TestCase(append='unique = arr.unique()',
                      assertion=ContextAssertion(
-                         key='arr', expected=[1, 2, 3, 4, 5])),
+                         key='unique', expected=[1, 2, 3, 4, 5])),
 
             TestCase(append='a = arr.contains(item: 1)',
                      assertion=ContextAssertion(key='a', expected=True)),
@@ -648,23 +648,23 @@ class TestSuite:
             TestCase(append='a = arr.contains(item: 11000)',
                      assertion=ContextAssertion(key='a', expected=False)),
 
-            TestCase(append='arr.remove(item: 3)',
+            TestCase(append='arr = arr.remove(item: 3)',
                      assertion=ContextAssertion(
                          key='arr', expected=[1, 2, 2, 4, 4, 5, 5])),
 
-            TestCase(append='arr.remove(item: 30)',
+            TestCase(append='arr = arr.remove(item: 30)',
                      assertion=ContextAssertion(
                          key='arr', expected=[1, 2, 2, 3, 4, 4, 5, 5])),
 
-            TestCase(append='arr.replace(item: 3 by: 42)',
+            TestCase(append='arr = arr.replace(item: 3 by: 42)',
                      assertion=ContextAssertion(
                          key='arr', expected=[1, 2, 2, 42, 4, 4, 5, 5])),
 
-            TestCase(append='arr.replace(item: 6 by: 42)',
+            TestCase(append='arr = arr.replace(item: 6 by: 42)',
                      assertion=ContextAssertion(
                          key='arr', expected=[1, 2, 2, 3, 4, 4, 5, 5])),
 
-            TestCase(append='arr.replace(item: 2 by: 42)',
+            TestCase(append='arr = arr.replace(item: 2 by: 42)',
                      assertion=ContextAssertion(
                          key='arr', expected=[1, 42, 42, 3, 4, 4, 5, 5])),
         ]),
@@ -1431,7 +1431,7 @@ async def test_resolve_all_objects(suite: TestSuite, logger):
         ]
     ),
     TestSuite(
-        preparation_lines='arr = []\narr append item: 42\nb = arr[0]',
+        preparation_lines='arr = []\narr2 = arr append item: 42\nb = arr2[0]',
         cases=[
             TestCase(append='c = b as List[int]',
                      assertion=RuntimeExceptionAssertion(

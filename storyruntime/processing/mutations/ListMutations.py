@@ -19,12 +19,16 @@ class ListMutations:
     @classmethod
     def append(cls, mutation, value, story, line, operator):
         item = story.argument_by_name(mutation, 'item')
-        return value.append(item)
+        copy = value.copy()
+        copy.append(item)
+        return copy
 
     @classmethod
     def prepend(cls, mutation, value, story, line, operator):
         item = story.argument_by_name(mutation, 'item')
-        return value.insert(0, item)
+        copy = value.copy()
+        copy.insert(0, item)
+        return copy
 
     @classmethod
     def random(cls, mutation, value, story, line, operator):
@@ -32,11 +36,15 @@ class ListMutations:
 
     @classmethod
     def reverse(cls, mutation, value, story, line, operator):
-        value.reverse()
+        copy = value.copy()
+        copy.reverse()
+        return copy
 
     @classmethod
     def sort(cls, mutation, value, story, line, operator):
-        value.sort()
+        copy = value.copy()
+        copy.sort()
+        return copy
 
     @classmethod
     def min(cls, mutation, value, story, line, operator):
@@ -57,28 +65,37 @@ class ListMutations:
 
     @classmethod
     def unique(cls, mutation, value, story, line, operator):
+        copy = value.copy()
         tmp_set = set()
         i = 0
-        while i < len(value):
-            if value[i] in tmp_set:
-                del value[i]
+        while i < len(copy):
+            if copy[i] in tmp_set:
+                del copy[i]
             else:
-                tmp_set.add(value[i])
+                tmp_set.add(copy[i])
                 i += 1
+
+        return copy
 
     @classmethod
     def remove(cls, mutation, value, story, line, operator):
         item = story.argument_by_name(mutation, 'item')
+        copy = value.copy()
         try:
-            value.remove(item)
+            copy.remove(item)
         except ValueError:
             # The value to be removed is not in the list.
             pass
+        finally:
+            return copy
 
     @classmethod
     def replace(cls, mutation, value, story, line, operator):
         by = story.argument_by_name(mutation, 'by')
+        copy = value.copy()
         item = story.argument_by_name(mutation, 'item')
-        for i, el in enumerate(value):
+        for i, el in enumerate(copy):
             if el == item:
-                value[i] = by
+                copy[i] = by
+
+        return copy
