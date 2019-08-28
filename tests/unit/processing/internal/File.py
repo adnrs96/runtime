@@ -146,7 +146,7 @@ async def test_service_file_list(magic, patch, story, line,
     patch.object(os.path, 'isdir', return_value=True)
     patch.object(os.path, 'join')
     patch.object(os, 'listdir')
-    patch.object(pathlib.Path, 'iterdir', new=magic())
+    patch.object(pathlib.Path, 'rglob', new=magic())
 
     await File.file_list(story, line, resolved_args)
 
@@ -156,7 +156,7 @@ async def test_service_file_list(magic, patch, story, line,
     os.path.isdir.assert_called_with(path)
 
     if recursive:
-        pathlib.Path.iterdir.assert_called()
+        pathlib.Path.rglob.assert_called()
     else:
         os.listdir.assert_called_with(path)
 
