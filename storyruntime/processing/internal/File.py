@@ -43,12 +43,20 @@ async def file_mkdir(story, line, resolved_args):
 
 @Decorators.create_service(name='file', command='write', arguments={
     'path': {'type': 'string'},
+    'binary': {'type': 'boolean', 'required': False},
+    'encoding': {'type': 'string', 'required': False},
     'content': {'type': 'any'}
 })
 async def file_write(story, line, resolved_args):
     path = safe_path(story, resolved_args['path'])
+
     try:
         content = resolved_args['content']
+        if resolved_args.get('binary', False):
+            content = bytes(
+                content,
+                resolved_args.get('encoding', 'utf-8')
+            )
         if isinstance(content, bytes):
             mode = 'wb'
         else:
@@ -62,13 +70,20 @@ async def file_write(story, line, resolved_args):
 
 @Decorators.create_service(name='file', command='read', arguments={
     'path': {'type': 'string'},
+    'binary': {'type': 'boolean'},
     'raw': {'type': 'boolean'}
 }, output_type='string')
 async def file_read(story, line, resolved_args):
     path = safe_path(story, resolved_args['path'])
-    raw = resolved_args.get('raw', False)
+
     try:
-        if raw:
+        # support raw flag in case
+        # any stories are using it.
+        # binary is the preferred
+        # verbage
+        if resolved_args.get(
+            'binary', resolved_args.get('raw', False)
+        ):
             mode = 'rb'
         else:
             mode = 'r'
@@ -86,12 +101,11 @@ async def file_read(story, line, resolved_args):
 
 
 @Decorators.create_service(name='file', command='list', arguments={
-    'path': {'type': 'string'},
-    'recursive': {'type': 'boolean'}
+    'path': {'type': 'string', 'required': False},
+    'recursive': {'type': 'boolean', 'required': False}
 }, output_type='list')
 async def file_list(story, line, resolved_args):
     path = safe_path(story, resolved_args.get('path', '.'))
-    recursive = resolved_args.get('recursive', False)
     try:
         if not os.path.exists(path):
             raise StoryscriptError(
@@ -112,7 +126,7 @@ async def file_list(story, line, resolved_args):
         tmp_dir = story.get_tmp_dir()
 
         items = []
-        if recursive:
+        if resolved_args.get('recursive', False):
             p = pathlib.Path(path)
 
             for child in p.iterdir():
@@ -136,7 +150,7 @@ async def file_list(story, line, resolved_args):
     'path': {'type': 'string'}
 })
 async def file_remove_dir(story, line, resolved_args):
-    path = safe_path(story, resolved_args['path'])
+    path = safe_path(story, resolved_args.get('path', None))
     try:
         if not os.path.exists(path):
             raise StoryscriptError(
@@ -208,7 +222,6 @@ async def file_exists(story, line, resolved_args):
 async def file_isdir(story, line, resolved_args):
     path = safe_path(story, resolved_args['path'])
     try:
-
         return os.path.isdir(path)
     except FileNotFoundError:
         raise StoryscriptError(
