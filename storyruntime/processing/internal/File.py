@@ -129,12 +129,11 @@ async def file_list(story, line, resolved_args):
         if resolved_args.get('recursive', False):
             p = pathlib.Path(path)
 
-            for child in p.iterdir():
+            for child in p.rglob('*'):
                 items.append(str(child).replace(tmp_dir, ''))
-
         else:
             for path in os.listdir(path):
-                items.append(path.replace(tmp_dir, '/'))
+                items.append(f'/{path.replace(tmp_dir, "/")}')
         return items
     except FileNotFoundError:
         raise StoryscriptError(
