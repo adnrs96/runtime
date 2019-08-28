@@ -162,7 +162,7 @@ class TestSuite:
         cases=[
             TestCase(assertion=ContextAssertion(
                 key='files',
-                expected=['path', 'file']
+                expected=['/path', '/file']
             ))
         ]
     ),
