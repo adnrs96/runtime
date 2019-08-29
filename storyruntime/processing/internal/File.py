@@ -122,17 +122,17 @@ async def file_list(story, line, resolved_args):
                 story=story, line=line
             )
 
-        tmp_dir = story.get_tmp_dir()
-
         items = []
-        if resolved_args.get('recursive', False):
-            p = pathlib.Path(path)
+        p = pathlib.Path(path)
 
-            for child in p.rglob('*'):
-                items.append(str(child).replace(tmp_dir, ''))
+        if resolved_args.get('recursive', False):
+            children = p.rglob('*')
         else:
-            for path in os.listdir(path):
-                items.append(f'/{path.replace(tmp_dir, "/")}')
+            children = p.iterdir()
+
+        for child in children:
+            items.append(f'/{str(child.relative_to(p))}')
+
         return items
     except FileNotFoundError:
         raise StoryscriptError(
