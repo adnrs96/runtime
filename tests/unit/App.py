@@ -222,7 +222,7 @@ def test_app_create_tmp_dir(patch, app):
     patch.object(pathlib, 'Path')
     patch.object(app, 'get_tmp_dir')
 
-    # Yes, called twice to ensure the dir is created just once.
+    # create_tmp_dir is called twice to ensure the dir is created just once.
     app.create_tmp_dir()
     app.create_tmp_dir()
 
