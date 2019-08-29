@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
-import tempfile
-
 import math
 import re
 import sys
+import tempfile
 from unittest.mock import MagicMock
 
 from pytest import mark
