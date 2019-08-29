@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+import tempfile
+
 import math
 import re
 import sys
@@ -1034,6 +1036,11 @@ async def run_test_case_in_suite(suite: TestSuite, case: TestCase, logger):
         raise errors[0]
 
     app = MagicMock()
+
+    def get_tmp_dir():
+        return tempfile.gettempdir()
+
+    app.get_tmp_dir = get_tmp_dir
 
     app.stories = {
         story_name: story.result()
