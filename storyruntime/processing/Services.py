@@ -158,7 +158,7 @@ class Services:
                 # we will not pass the argument into resolved args.
                 # This allows us to set default for arguments when
                 # they aren't set
-                required = command.arguments[arg].get('required', False)
+                required = command.arguments[arg].get('required', True)
 
                 if not required and actual is None:
                     continue
