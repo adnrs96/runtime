@@ -1140,8 +1140,6 @@ async def run_test_case_in_suite(suite: TestSuite, case: TestCase, logger):
         print(f'Failed to run the following story:'
               f'\n\n{all_lines}', file=sys.stderr)
         raise e
-    finally:
-        story.app.cleanup_tmp_dirs()
 
     if type(case.assertion) == list:
         assertions = case.assertion
