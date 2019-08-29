@@ -77,10 +77,9 @@ async def file_read(story, line, resolved_args):
     path = safe_path(story, resolved_args['path'])
 
     try:
-        # support raw flag in case
-        # any stories are using it.
-        # binary is the preferred
-        # verbage
+        # This is used to support the raw argument in case any
+        # stories are using it. The binary is the preferred
+        # verbage when utilizing binary data.
         if resolved_args.get(
             'binary', resolved_args.get('raw', False)
         ):

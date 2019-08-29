@@ -156,7 +156,8 @@ class Services:
                 actual = story.argument_by_name(line=line, argument_name=arg)
                 # when the required flag is set to False,
                 # we will not pass the argument into resolved args.
-                # This allows us to set default
+                # This allows us to set default for arguments when
+                # they aren't set
                 if not command.arguments.get(
                         arg, {}).get('required', True) and \
                         actual is None:
