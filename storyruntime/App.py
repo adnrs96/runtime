@@ -112,6 +112,7 @@ class App:
             pathlib.Path(path).mkdir(parents=True, mode=0o700, exist_ok=True)
         except BaseException as e:
             self.logger.error(f'Failed to create tmp dir {path}', e)
+            raise e
 
     async def cleanup_tmp_dir(self):
         tmpdir = self.get_tmp_dir()
