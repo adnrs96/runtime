@@ -413,6 +413,48 @@ class TestSuite:
         ]
     ),
     TestSuite(
+        preparation_lines='list = ["hello", "world"]\n'
+                          'dict = {"hello": "world"}\n'
+                          'file write path: "/tmp.txt" content: "hello"\n'
+                          'bytes = file read path: "/tmp.txt" raw: true',
+        cases=[
+            TestCase(prepend='a = "{true}"',
+                     assertion=[
+                         ContextAssertion(key='a', expected='true')
+                     ]),
+            TestCase(prepend='a = "{false}"',
+                     assertion=[
+                         ContextAssertion(key='a', expected='false')
+                     ]),
+            TestCase(prepend='a = "{1.2}"',
+                     assertion=[
+                         ContextAssertion(key='a', expected='1.2')
+                     ]),
+            TestCase(prepend='a = "{1}"',
+                     assertion=[
+                         ContextAssertion(key='a', expected='1')
+                     ]),
+            TestCase(append='a = "{list}"',
+                     assertion=[
+                         ContextAssertion(
+                             key='a',
+                             expected='[\'hello\', \'world\']')
+                     ]),
+            TestCase(append='a = "{dict}"',
+                     assertion=[
+                         ContextAssertion(
+                             key='a',
+                             expected='{\'hello\': \'world\'}')
+                     ]),
+            TestCase(append='a = "{bytes}"',
+                     assertion=[
+                         ContextAssertion(
+                             key='a',
+                             expected='b\'hello\'')
+                     ])
+        ]
+    ),
+    TestSuite(
         preparation_lines='labels = [{"name": "a"}]\n'
                           'found = false',
         cases=[
@@ -1055,14 +1097,75 @@ class TestSuite:
         ]
     ),
     TestSuite(
-        preparation_lines='throw "error"',
+        preparation_lines='i = 0',
         cases=[
             TestCase(
+                append='while i < 10\n'
+                       '   i = i + 1\n'
+                       'outside = true',
+                assertion=[ContextAssertion(key='outside', expected=True),
+                           ContextAssertion(key='i', expected=10)])
+        ]
+    ),
+    TestSuite(
+        preparation_lines='i = 0\na = 0',
+        cases=[
+            TestCase(
+                append='while i < 100\n'
+                       '    a = 0\n'
+                       '    while a < 10\n'
+                       '      i = i + 1\n'
+                       '      a = a + 1\n'
+                       'outside = true',
+                assertion=[ContextAssertion(key='outside', expected=True),
+                           ContextAssertion(key='i', expected=100),
+                           ContextAssertion(key='a', expected=10)])
+        ]
+    ),
+    TestSuite(
+        preparation_lines='i = 0',
+        cases=[
+            TestCase(
+                append='while i < 2000000\n'
+                       '   i = i + 1\n',
                 assertion=RuntimeExceptionAssertion(
-                    exception_type=StoryscriptError,
-                    message='error'
+                    exception_type=StoryscriptRuntimeError,
+                    context_assertion=ContextAssertion(
+                        key='i',
+                        expected=100000
+                    )
                 )
-            ),
+            )
+        ]
+    ),
+    TestSuite(
+        preparation_lines='i = 0',
+        cases=[
+            TestCase(
+                append='while true\n'
+                       '   i = i + 1\n',
+                assertion=RuntimeExceptionAssertion(
+                    exception_type=StoryscriptRuntimeError,
+                    context_assertion=ContextAssertion(
+                        key='i',
+                        expected=100000
+                    )
+                )
+            )
+        ]
+    ),
+    TestSuite(
+        preparation_lines='function foo returns boolean\n'
+                          '   while true\n'
+                          '      return true\n',
+        cases=[
+            TestCase(
+                append='value = foo()',
+                assertion=ContextAssertion(
+                    key='value',
+                    expected=True
+                )
+            )
         ]
     ),
 ])
