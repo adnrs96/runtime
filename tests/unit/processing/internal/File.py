@@ -43,7 +43,8 @@ def test_service_file_safe_path(patch, story):
 
 
 @mark.asyncio
-async def test_service_file_mkdir(story, line, file_io):
+async def test_service_file_mkdir(patch, story, line, file_io):
+    patch.object(story.app, 'get_tmp_dir', return_value='/tmp/my.story')
     story.execution_id = 'super_super_tmp'
     resolved_args = {
         'path': 'my_path'
@@ -55,6 +56,7 @@ async def test_service_file_mkdir(story, line, file_io):
 
 @mark.asyncio
 async def test_service_file_mkdir_exc(patch, story, line, file_io, exc):
+    patch.object(story.app, 'get_tmp_dir', return_value='/tmp/my.story')
     patch.object(os, 'makedirs', side_effect=exc)
     story.execution_id = 'super_super_tmp'
     resolved_args = {
@@ -65,7 +67,8 @@ async def test_service_file_mkdir_exc(patch, story, line, file_io, exc):
 
 
 @mark.asyncio
-async def test_service_file_write(story, line, file_io):
+async def test_service_file_write(patch, story, line, file_io):
+    patch.object(story.app, 'get_tmp_dir', return_value='/tmp/my.story')
     story.execution_id = 'super_super_tmp'
     resolved_args = {
         'path': 'my_path',
@@ -77,7 +80,8 @@ async def test_service_file_write(story, line, file_io):
 
 
 @mark.asyncio
-async def test_service_file_write_bytes(story, line, file_io):
+async def test_service_file_write_bytes(patch, story, line, file_io):
+    patch.object(story.app, 'get_tmp_dir', return_value='/tmp/my.story')
     story.execution_id = 'super_super_tmp'
     resolved_args = {
         'path': 'my_path',
@@ -90,6 +94,7 @@ async def test_service_file_write_bytes(story, line, file_io):
 
 @mark.asyncio
 async def test_service_file_write_exc(patch, story, line, service_patch, exc):
+    patch.object(story.app, 'get_tmp_dir', return_value='/tmp/my.story')
     patch.object(File, 'open', side_effect=exc)
     resolved_args = {
         'path': 'my_path'
@@ -99,7 +104,8 @@ async def test_service_file_write_exc(patch, story, line, service_patch, exc):
 
 
 @mark.asyncio
-async def test_service_file_read(story, line, file_io):
+async def test_service_file_read(patch, story, line, file_io):
+    patch.object(story.app, 'get_tmp_dir', return_value='/tmp/my.story')
     story.execution_id = 'super_super_tmp'
     resolved_args = {
         'path': 'my_path'
@@ -111,7 +117,8 @@ async def test_service_file_read(story, line, file_io):
 
 
 @mark.asyncio
-async def test_service_file_read_bytes(story, line, file_io):
+async def test_service_file_read_bytes(patch, story, line, file_io):
+    patch.object(story.app, 'get_tmp_dir', return_value='/tmp/my.story')
     story.execution_id = 'super_super_tmp'
     resolved_args = {
         'path': 'my_path',
@@ -125,6 +132,7 @@ async def test_service_file_read_bytes(story, line, file_io):
 
 @mark.asyncio
 async def test_service_file_read_exc(patch, story, line, service_patch, exc):
+    patch.object(story.app, 'get_tmp_dir', return_value='/tmp/my.story')
     patch.object(File, 'open', side_effect=exc)
     resolved_args = {
         'path': 'my_path'
@@ -137,6 +145,7 @@ async def test_service_file_read_exc(patch, story, line, service_patch, exc):
 @mark.parametrize('recursive', [True, False])
 async def test_service_file_list(magic, patch, story, line,
                                  recursive, file_io):
+    patch.object(story.app, 'get_tmp_dir', return_value='/tmp/my.story')
     story.execution_id = 'super_super_tmp'
     resolved_args = {
         'path': 'my_path',
@@ -150,7 +159,7 @@ async def test_service_file_list(magic, patch, story, line,
 
     await File.file_list(story, line, resolved_args)
 
-    path = f'{story.get_tmp_dir()}/my_path'
+    path = f'{story.app.get_tmp_dir()}/my_path'
 
     os.path.exists.assert_called_with(path)
     os.path.isdir.assert_called_with(path)
@@ -163,6 +172,7 @@ async def test_service_file_list(magic, patch, story, line,
 
 @mark.asyncio
 async def test_service_file_remove_dir(patch, story, line, file_io):
+    patch.object(story.app, 'get_tmp_dir', return_value='/tmp/my.story')
     story.execution_id = 'super_super_tmp'
     resolved_args = {
         'path': 'my_path'
@@ -173,7 +183,7 @@ async def test_service_file_remove_dir(patch, story, line, file_io):
 
     await File.file_remove_dir(story, line, resolved_args)
 
-    path = f'{story.get_tmp_dir()}/my_path'
+    path = f'{story.app.get_tmp_dir()}/my_path'
 
     os.path.exists.assert_called_with(path)
     os.path.isdir.assert_called_with(path)
@@ -185,6 +195,7 @@ async def test_service_file_remove_dir(patch, story, line, file_io):
 @mark.parametrize('exists', [True, False])
 async def test_service_file_remove_dir_exc(patch, story, line,
                                            exists, file_io):
+    patch.object(story.app, 'get_tmp_dir', return_value='/tmp/my.story')
     story.execution_id = 'super_super_tmp'
     resolved_args = {
         'path': 'my_path'
@@ -198,6 +209,7 @@ async def test_service_file_remove_dir_exc(patch, story, line,
 
 @mark.asyncio
 async def test_service_file_remove_file(patch, story, line, file_io):
+    patch.object(story.app, 'get_tmp_dir', return_value='/tmp/my.story')
     story.execution_id = 'super_super_tmp'
     resolved_args = {
         'path': 'my_path'
@@ -208,7 +220,7 @@ async def test_service_file_remove_file(patch, story, line, file_io):
 
     await File.file_remove_file(story, line, resolved_args)
 
-    path = f'{story.get_tmp_dir()}/my_path'
+    path = f'{story.app.get_tmp_dir()}/my_path'
 
     os.path.exists.assert_called_with(path)
     os.path.isdir.assert_called_with(path)
@@ -218,6 +230,7 @@ async def test_service_file_remove_file(patch, story, line, file_io):
 @mark.asyncio
 @mark.parametrize('exists', [True, False])
 async def test_service_file_remove_file_exc(patch, story, line, exists):
+    patch.object(story.app, 'get_tmp_dir', return_value='/tmp/my.story')
     story.execution_id = 'super_super_tmp'
     resolved_args = {
         'path': 'my_path'
@@ -231,6 +244,7 @@ async def test_service_file_remove_file_exc(patch, story, line, exists):
 
 @mark.asyncio
 async def test_service_file_exists(patch, story, line):
+    patch.object(story.app, 'get_tmp_dir', return_value='/tmp/my.story')
     patch.object(os.path, 'exists')
     story.execution_id = 'super_super_tmp'
     resolved_args = {
@@ -244,25 +258,28 @@ async def test_service_file_exists(patch, story, line):
 
 @mark.asyncio
 async def test_service_file_isdir(patch, story, line):
+    patch.object(story.app, 'get_tmp_dir', return_value='/tmp/my.story')
     patch.object(os.path, 'isdir')
+
     story.execution_id = 'super_super_tmp'
     resolved_args = {
         'path': 'my_path'
     }
     result = await File.file_isdir(story, line, resolved_args)
-    os.path.isdir.assert_called_with(f'{story.get_tmp_dir()}/my_path')
+    os.path.isdir.assert_called_with(f'{story.app.get_tmp_dir()}/my_path')
 
     assert result == os.path.isdir()
 
 
 @mark.asyncio
 async def test_service_file_isfile(patch, story, line):
+    patch.object(story.app, 'get_tmp_dir', return_value='/tmp/my.story')
     patch.object(os.path, 'isfile')
     story.execution_id = 'super_super_tmp'
     resolved_args = {
         'path': 'my_path'
     }
     result = await File.file_isfile(story, line, resolved_args)
-    os.path.isfile.assert_called_with(f'{story.get_tmp_dir()}/my_path')
+    os.path.isfile.assert_called_with(f'{story.app.get_tmp_dir()}/my_path')
 
     assert result == os.path.isfile()
