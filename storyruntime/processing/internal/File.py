@@ -25,7 +25,7 @@ def safe_path(story, path):
 
 
 def clean_path(story, path):
-    return path.replace(story.get_tmp_dir(), '')
+    return f'/{str(pathlib.Path(path).relative_to(story.get_tmp_dir()))}'
 
 
 @Decorators.create_service(name='file', command='mkdir', arguments={
