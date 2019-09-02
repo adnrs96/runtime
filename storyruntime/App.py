@@ -114,12 +114,15 @@ class App:
             self.logger.error(f'Failed to create tmp dir {path}', e)
             raise e
 
-    async def cleanup_tmp_dir(self):
+    def cleanup_tmp_dir(self):
         tmpdir = self.get_tmp_dir()
 
-        self.logger.debug(f'Removing tmp dir: {tmpdir}')
-
-        shutil.rmtree(tmpdir, ignore_errors=True)
+        self.logger.debug(f'Cleaning up tmp dir: {tmpdir}')
+        try:
+            shutil.rmtree(tmpdir, ignore_errors=True)
+        except BaseException as e:
+            self.logger.error(f'Failed to cleanup tmp dir {tmpdir}', e)
+            raise e
 
     def get_tmp_dir(self):
         return f'/tmp/story.{self.app_id}'
@@ -292,4 +295,4 @@ class App:
                 f'Failed to unsubscribe synapse subscriptions: {e}'
             )
 
-        await self.cleanup_tmp_dir()
+        self.cleanup_tmp_dir()
