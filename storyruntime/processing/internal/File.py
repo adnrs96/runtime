@@ -29,10 +29,6 @@ def clean_path(story, path):
     return f'/{str(pathlib.Path(path).relative_to(story.get_tmp_dir()))}'
 
 
-def clean_path(story, path):
-    return f'/{str(pathlib.Path(path).relative_to(story.get_tmp_dir()))}'
-
-
 @Decorators.create_service(name='file', command='mkdir', arguments={
     'path': {'type': 'string'}
 })

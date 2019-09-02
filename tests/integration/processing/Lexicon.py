@@ -1219,8 +1219,10 @@ async def run_test_case_in_suite(suite: TestSuite, case: TestCase, logger):
 
     app = MagicMock()
 
+    tmp_dir = tempfile.TemporaryDirectory()
+
     def get_tmp_dir():
-        return tempfile.gettempdir()
+        return tmp_dir.name
 
     app.get_tmp_dir = get_tmp_dir
 
