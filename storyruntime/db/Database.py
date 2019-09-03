@@ -7,6 +7,7 @@ import asyncpg
 import numpy as np
 
 from ..Config import Config
+from ..constants.ServiceConstants import ServiceConstants
 from ..entities.ContainerConfig import ContainerConfig
 from ..entities.Release import Release
 from ..enums.AppEnvironment import AppEnvironment
@@ -193,14 +194,14 @@ class Database:
             res = await con.fetchrow(query, service_tag_uuid)
             if res is None or -1 in res['memory_bytes']:
                 limits = {
-                    'cpu': 0,
-                    'memory': 209715000  # 200Mi
+                    'cpu': ServiceConstants.default_cpu,
+                    'memory': ServiceConstants.default_memory  # 200Mi
                 }
             else:
                 limits = {
                     'cpu': 1.25 * np.percentile(res['cpu_units'], 95),
                     'memory': min(
-                        209715000,  # 200Mi
+                        ServiceConstants.default_memory,  # 200Mi
                         1.25 * np.percentile(res['memory_bytes'], 95)
                     )
                 }

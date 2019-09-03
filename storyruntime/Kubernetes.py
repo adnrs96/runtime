@@ -576,9 +576,22 @@ class Kubernetes:
             app.config, [{'service_uuid': service_uuid, 'tag': tag}]
         )
         assert len(service_tag_uuids) == 1
-        limits = await Database.get_service_limits(
-            app.config, service_tag_uuids[0]
-        )
+
+        # when this is set to always, we need
+        # to ensure that the service isn't limited.
+        # Note: WIP/TODO - adding support for
+        # image version detection, and oom
+        if app.image_pull_policy() == 'Always':
+            limits = {
+                'cpu': ServiceConstants.default_cpu,
+                'memory': ServiceConstants.default_memory  # 200Mi
+            }
+        else:
+            limits = await Database.get_service_limits(
+                app.config, service_tag_uuids[0]
+            )
+
+        app.logger.debug(f'Service limits set to: {limits}')
 
         payload = {
             'apiVersion': 'apps/v1',
