@@ -2026,7 +2026,7 @@ async def test_float_mutations(suite: Suite, logger):
               Case(append='a = test(a: 11 b: 0)',
                    assertion=ContextAssertion(key='a', expected='error'))
           ]
-    )
+          )
 ])
 @mark.asyncio
 async def test_try_catch(suite: Suite, logger):
