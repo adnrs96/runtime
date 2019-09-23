@@ -2015,17 +2015,17 @@ async def test_float_mutations(suite: Suite, logger):
                             '        if a % 2 == 0 and b == 0\n'
                             '            return "evenoverride"\n'
                             '    return "odd"\n',
-        cases=[
-            Case(append='a = test(a: 10 b: 1)',
-                 assertion=ContextAssertion(key='a', expected='even')),
-            Case(append='a = test(a: 10 b: 0)',
-                 assertion=RuntimeExceptionAssertion(
-                     exception_type=StoryscriptError,
-                     message='Invalid usage of keyword "return".'
-                 )),
-            Case(append='a = test(a: 11 b: 0)',
-                 assertion=ContextAssertion(key='a', expected='error'))
-        ]
+          cases=[
+              Case(append='a = test(a: 10 b: 1)',
+                   assertion=ContextAssertion(key='a', expected='even')),
+              Case(append='a = test(a: 10 b: 0)',
+                   assertion=RuntimeExceptionAssertion(
+                       exception_type=StoryscriptError,
+                       message='Invalid usage of keyword "return".'
+                   )),
+              Case(append='a = test(a: 11 b: 0)',
+                   assertion=ContextAssertion(key='a', expected='error'))
+          ]
     )
 ])
 @mark.asyncio
