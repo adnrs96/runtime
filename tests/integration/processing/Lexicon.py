@@ -2004,31 +2004,30 @@ async def test_float_mutations(suite: Suite, logger):
 
 
 @mark.parametrize('suite', [
-    TestSuite(
-        preparation_lines='function test a: int b: int returns string\n'
-                          '    try\n'
-                          '        if a % 2 == 0\n'
-                          '            return "even"\n'
-                          '        a = a / b\n'
-                          '    catch\n'
-                          '        return "error"\n'
-                          '    finally\n'
-                          '        if a % 2 == 0 and b == 0\n'
-                          '            return "evenoverride"\n'
-                          '    return "odd"\n',
+    Suite(preparation_lines='function test a: int b: int returns string\n'
+                            '    try\n'
+                            '        if a % 2 == 0\n'
+                            '            return "even"\n'
+                            '        a = a / b\n'
+                            '    catch\n'
+                            '        return "error"\n'
+                            '    finally\n'
+                            '        if a % 2 == 0 and b == 0\n'
+                            '            return "evenoverride"\n'
+                            '    return "odd"\n',
         cases=[
-            TestCase(append='a = test(a: 10 b: 1)',
-                     assertion=ContextAssertion(key='a', expected='even')),
-            TestCase(append='a = test(a: 10 b: 0)',
-                     assertion=RuntimeExceptionAssertion(
-                         exception_type=StoryscriptError,
-                         message='Invalid usage of keyword "return".'
-                     )),
-            TestCase(append='a = test(a: 11 b: 0)',
-                     assertion=ContextAssertion(key='a', expected='error'))
+            Case(append='a = test(a: 10 b: 1)',
+                 assertion=ContextAssertion(key='a', expected='even')),
+            Case(append='a = test(a: 10 b: 0)',
+                 assertion=RuntimeExceptionAssertion(
+                     exception_type=StoryscriptError,
+                     message='Invalid usage of keyword "return".'
+                 )),
+            Case(append='a = test(a: 11 b: 0)',
+                 assertion=ContextAssertion(key='a', expected='error'))
         ]
     )
 ])
 @mark.asyncio
-async def test_try_catch(suite: TestSuite, logger):
+async def test_try_catch(suite: Suite, logger):
     await run_suite(suite, logger)
